@@ -85,7 +85,6 @@ def getProbabilityDistributionList(cities_matrix, pheromone_trail,visited_path):
 				probList.append((city,cummulative_prob))
 	return probList
 
-
 # Find the next unvisited city
 def nextCity(cities_matrix, pheromone_trail,visited_path):
 
