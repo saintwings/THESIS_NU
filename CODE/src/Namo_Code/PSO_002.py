@@ -27,15 +27,15 @@ avg_angle = cal_Avg_Angle(original_posture_config,7)
 
 score_weight = [1,0.001,0.001]
 
-def show_vector(vector):
-  for i in range(len(vector)):
-    if i % 8 == 0: # 8 columns
-      print("\n", end="")
-    if vector[i] >= 0.0:
-      print(' ', end="")
-    print("%.4f" % vector[i], end="") # 4 decimals
-    print(" ", end="")
-  print("\n")
+# def show_vector(vector):
+#   for i in range(len(vector)):
+#     if i % 8 == 0: # 8 columns
+#       print("\n", end="")
+#     if vector[i] >= 0.0:
+#       print(' ', end="")
+#     print("%.4f" % vector[i], end="") # 4 decimals
+#     print(" ", end="")
+#   print("\n")
 
 def error(position, ref_pose, score_weight):
   err = 0.0

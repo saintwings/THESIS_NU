@@ -1,306 +1,362 @@
-"""
-ACO to solve TSP ry48p Assymetric travelling salesman problem
-"""
+# Based on the Athens course at Telecom ParisTech by Jean-Louis Dessales
 
-import random,csv
-import timeit
-
-# Algorithm paramters
-ant_count = 10
-iterations = 500
-PheromoneConstant = 1.0
-DecayConstant = 0.2
-Alpha = 1	# Pheromone constant
-Beta = 1	# Heuristic constant
-
-RANDOM = 1
-CITY0 = 0
-initialization = RANDOM
+import math
+import Tkinter
+from time import sleep
+import random
+from PIL import *
+import PIL  # to interface Python Imaging Library with Tkinter
+from Simulation import *
+from Simulation_Control import *
+from Draw_Area import *
+from Generic_Main_Frame import *
+from Ground import *
 
 
-# Creates an emplty path matrix for movemet between each and every city
-def emptyPath(city_count):
-    path = []
-    for from_city in range(city_count):
-        path1 = []
-        for to_city in range(city_count):
-             path1.append(0)
-	path.append(path1)
-    return path
+class LandCell(object):
+    # defines one cell
+    def __init__(self, N=0, NP=0, PP=0):
+        self.Node = N
+        self.PPheromone = PP  # Attractive Pheromone
+        self.fieldIndex = -1
 
-# Returns the total cost of the tour for one ant
-def pathLength(cities, path):
-    path_with_next_city = path[1:] + [path[0]]
-    pairs = zip(path, path_with_next_city)
-    return sum([cities[r][c] for (r,c) in pairs])
-
-# Initialize the ants to a random city or specific city
-def initialize_ants(ant_count,cities_count):
-	path = []
-
-	for ant in range(ant_count):
-		if initialization == RANDOM:
-			path.append([random.randint(0,cities_count-1)])
-		elif initialization == CITY0:
-			path.append([CITY0])
-	return path
-
-# Check if all ant have completed tour
-def isAllCompletedTour(paths,cities_count):
-
-	for ant in range(len(paths)):
-		if len(paths[ant]) < cities_count:
-			return False
-	return True
-
-# Calculate sum total of the probability distribution to unvisited cities
-def sumTotal(cities_matrix,pheromone_trail,visited_path):
-
-	total = 0.0
-	current_city = visited_path[-1]
-	for city in range(len(cities_matrix)):
-		if city not in visited_path:
-			total = total + pow(pheromone_trail[current_city][city],Alpha) * pow(1.0/cities_matrix[current_city][city],Beta)
-	return total
-
-# get Probability Distribution
-def getProbabilityDistributionList(cities_matrix, pheromone_trail,visited_path):
-
-	sumTotalValue = sumTotal(cities_matrix, pheromone_trail,visited_path)
-	probList = []
-	total = 0
-	current_city = visited_path[-1]
-	#print "Current City:"+str(current_city)
-	if sumTotalValue != 0:	# 1st iteration where there is no pheromone trail
-		for city in range(len(cities_matrix)):
-			if city not in visited_path:
-				prev_probability = 0
-				if len(probList) > 0:
-					(prev_city,prev_prob) = probList[-1]
-					prev_probability = prev_prob
-				cummulative_prob = (prev_probability + (pow(pheromone_trail[current_city][city],Alpha) * pow(1.0/cities_matrix[current_city][city],Beta))/sumTotalValue)
-				#print (pow(pheromone_trail[current_city][city],Alpha) * pow(1.0/cities_matrix[current_city][city],Beta))/sumTotalValue
-				#if prev_probability < 1.0 and cummulative_prob == 1.0 and city < 45:
-				#	print "hurray"+str(prev_probability)+":"+str(current_city)+":"+str(city)+":"+str((pow(pheromone_trail[current_city][city],Alpha) * pow(1.0/cities_matrix[current_city][city],Beta))/sumTotalValue)
-				probList.append((city,cummulative_prob))
-	return probList
-
-# Find the next unvisited city
-def nextCity(cities_matrix, pheromone_trail,visited_path):
-
-	prob_list = getProbabilityDistributionList(cities_matrix, pheromone_trail,visited_path)
-
-	next_city = -1
-
-	if len(prob_list) == 0:	# initial condition
-		next_city = random.randint(0,len(cities_matrix)-1)
-		while next_city in visited_path:
-			next_city = random.randint(0,len(cities_matrix)-1)
-	else:
-		#print "list------"+str(prob_list)
-		toss = random.random()
-		for (city,prob) in prob_list:
-
-			if toss <= prob:
-				#print str(visited_path)+"*************************************"+str(city)+":"+str(prob)
-				next_city = city
-				break
-	if next_city == -1:
-		print str(prob_list)+"*****"+str(toss)
-	return next_city
-
-# new pheromone for a particulat edge
-def newPheromone(from_city,to_city,paths,cities_matrix):
-
-	tot = 0.0
-	for ant in range(len(paths)):
-		# Check if the ant has used this path
-		if to_city in paths[ant] and from_city in paths[ant]:
-
-			if paths[ant].index(to_city) - paths[ant].index(from_city) == 1:
-				tot = tot + PheromoneConstant	/ pathLength(cities_matrix,paths[ant])
-
-	return tot
-
-# Update Pheromone
-def updatePheromone(pheromone_trail, path_array,cities_matrix):
-	for from_city in range(len(pheromone_trail)):
-		for to_city in range(len(pheromone_trail)):
-
-			if from_city == to_city:
-				pheromone_trail[from_city][to_city] = 0
-			else:
-				pheromone_trail[from_city][to_city] = (1 - DecayConstant) * pheromone_trail[from_city][to_city] + newPheromone(from_city,to_city,path_array,cities_matrix)
-			#print "Pheromone strength:"+str(pheromone_trail[from_city][to_city])
-	return pheromone_trail
+    def __add__(self, Other):
+        return LandCell(self.Node + Other.Node, self.PPheromone + Other.PPheromone)
 
 
-# iterationResult
-def iterationResult(iteration,paths,cities_matrix,(globalBest,path)):
-	print "Iteration:"+str(iteration)
-	print "**********************************"
-	localBest = 9999999
-	for ant in range(len(paths)):
-		cost = pathLength(cities_matrix,paths[ant])
-		#print "Ant:"+str(ant)+"	Path:"+str(paths[ant])+"\n"
-		if cost < globalBest:
-			globalBest = cost
-			path = paths[ant]
-		if cost < localBest:
-			localBest = cost
-	print "local Best:"+str(localBest)
+class Node(object):
+    def __init__(self, x=0, y=0, iden=0):
+        self.Id = iden
+        self.Position = [x, y]
 
-	#if localBest == 9999999:
-	#	print "No local best"
-	#	for ant in range(len(paths)):
-	#		print str(pathLength(cities_matrix,paths[ant]))+"----"+str(paths[ant])
-
-	f = open('result.csv','a')
-	f.write(str(iteration)+","+str(localBest)+"\n")
-	f.close()
-	return (globalBest,path)
+    def setPosition(self, Pos):
+        self.Position = Pos
 
 
-# Find the shortes path
-def shortestPath(cities_matrix, ant_count, iterations):
+class Landscape(object):
+    """ A 2-D grid with cells that contains pheromone or edges (for graphics)
+        Graph is represented by Nodes and Edges
+    """
 
-	cities_count = len(cities_matrix)
-	pheromone_trail = emptyPath(cities_count)
+    def __init__(self, Size):
+        self.Size = Size
+        self.Ground = [[LandCell() for x in range(Size)] for x in range(Size)]
 
-	globalBest = 999999999999
-	path = []
-	f = open('result.csv','a')
-	f.write("Iteration,LocalBest\n")
-	f.close()
-	for iteration in range(iterations):
+        # coordinates of edges with pheromons to be drawn on the map
+        # this field is update in the vaporate function
+        self.EdgesWithPheromons = [];
 
-		# Initialize ants with a random city
-		paths = initialize_ants(ant_count,cities_count)
+        # represents edges - value of pheromone on each edge
+        self.Edges = [[0 for col in range(NbNodes)] for row in range(NbNodes)]
 
-		while not isAllCompletedTour(paths,cities_count):	# End iteration when all ants have completed the tour
-			# For each ant in the colony
-			for ant in range(ant_count):
+        # distances between nodes
+        self.Distances = [[0 for col in range(NbNodes)] for row in range(NbNodes)]
 
-				# Termination criteria
-				if len(paths[ant]) < cities_count:
+        # used to store the actual optimal path
+        self.OptimalPath = 10000000000
 
-					paths[ant].append(nextCity(cities_matrix, pheromone_trail,paths[ant]))	# Find next town
+        # create the nodes
+        self.Nodes = []
+        self.Nodes.append(Node(100, 260, 0))
+        self.Nodes.append(Node(150, 100, 1))
+        self.Nodes.append(Node(200, 120, 2))
+        self.Nodes.append(Node(30, 200, 3))
+        self.Nodes.append(Node(225, 123, 4))
+        self.Nodes.append(Node(250, 250, 5))
 
-		# After all ants have completed the tour - Update pheromone
-		updatePheromone(pheromone_trail, paths,cities_matrix)
-		(globalBest,path) = iterationResult(iteration,paths,cities_matrix,(globalBest,path))
-	return (globalBest,path)
+        self.Nodes.append(Node(124, 90, 6))
+        self.Nodes.append(Node(50, 221, 7))
+        self.Nodes.append(Node(152, 152, 8))
+        self.Nodes.append(Node(80, 80, 9))
+        self.Nodes.append(Node(210, 85, 10))
 
-# Read matrix from a customized file
-def readTsp():
-	pathmatrix = []
-	tspfile = open('tsp_matrix.atsp', 'r')
-	for cities in range(48):
-		city = []
+        # compute the distances of all nodes
+        for ident in range(NbNodes):
+            node = self.Nodes[ident]
+            for prev in range(ident):
+                Direction = (complex(node.Position[0], node.Position[1]) - complex(self.Nodes[prev].Position[0],
+                                                                                   self.Nodes[prev].Position[1]))
+                Distance = abs(Direction)
+                self.Distances[ident][prev] = Distance
+                self.Distances[prev][ident] = Distance
 
-		line1 = tspfile.readline()
-		for node in line1.split():
-			city.append(int(node.strip()))
+            # Positioning the nodes  of the graph randomly
+            # for ident in range(NbNodes):
+            #    #symetrical
+            #    position = (100+50*(ident%3),100+50*(ident/3))
+            #    #random
+            #    #position = (random.randint(20,Size-20),random.randint(20,Size-20))
+            #    node = Node(position[0],position[1],ident)
+            #    self.Nodes.append(node)
+            #    Observer.record(('Node',position))
+            #    for prev in range(ident):
+            #        Direction = (node.Position - self.Nodes[prev].Position)
+            #        Distance = abs(Direction)
+            #        self.Distances[ident][prev] = Distance
+            #        self.Distances[prev][ident] = Distance
+            #
+            #    #make the nodes big
+            #    for Pos in self.neighbours(position, Radius=2):
+            #        Observer.record(('Node',Pos))
+            #        self.node(Pos,10)
 
-		line1 = tspfile.readline()
-		for node in line1.split():
-			city.append(int(node.strip()))
+    def evaporate(self):
+        Land.EdgesWithPheromons = []
+        for i in range(NbNodes):
+            for j in range(NbNodes):
+                # this is the value of the pheromone on the node
+                cell = Land.Edges[i][j]
 
-		line1 = tspfile.readline()
-		for node in line1.split():
-			city.append(int(node.strip()))
+                cell = (1 - theta) * cell
+                Land.Edges[i][j] = cell
 
-		line1 = tspfile.readline()
-		for node in line1.split():
-			city.append(int(node.strip()))
-
-		pathmatrix.append(city)
-	return pathmatrix
-
-def main():
-
-    print "starting"
-    distance_matrix = readTsp()
-    globalBest = shortestPath(distance_matrix, ant_count,iterations)
-    print "len = ", globalBest
-
-
-# This experiement graphs and plots the performance of the ACO against different set of ant population and generations
-def Experiement1():
-
-	geneartions = [10,50,100,250,500,1000]
-	antpopulation = [1,10,50,100,150,200]
-
-	for gen in geneartions:
-		for pop in antpopulation:
-			ant_count = pop
-			iterations = gen
-			distance_matrix = readTsp()
-			globalBest = shortestPath(distance_matrix, ant_count,iterations)
+                # if the value is higher than the limit - show the pheromone on the screen
+                if cell > PToShow:
+                    Land.EdgesWithPheromons.append([Land.Nodes[i].Position, Land.Nodes[j].Position])
 
 
-# This experiement plots and graphs the performance of ACO against different set of decay constants
-def Experiement2():
+class Ant(object):
+    """ Defines individual agents - one concrete Ant. The behaviour of ant can be expressed as a state machine with the state:
+        searchNextNode (search for the next node), ReturnToFirstNode, GoToNode (just go to the selected node).
+    """
 
-	decay_constants = [0.01,0.25,0.5,0.75,1.0]
+    def __init__(self, IdNb):
+        self.IdNb = IdNb  # Identity number
+        self.Action = 'SearchNextNode'
+        self.Node = Node()
+        self.Path = []
+        self.PathLength = 0
+        self.NodeDistance = -1
+        self.PrevNodeIndex = -1
+        self.ToVisit = []
+        self.Visited = []  # empty array of visited nodes
 
-	for decay in decay_constants:
-		ant_count = 100
-		iterations = 300
-		PheromoneConstant = 1.0
-		DecayConstant = decay
-		Alpha = 1	# Pheromone constant
-		Beta = 1	# Heuristic constant
-		f = open('result.csv','a')
-		f.write('Experiement2\n')
-		f.write('decay:'+str(decay)+'\n')
-		f.close()
-		distance_matrix = readTsp()
-		globalBest = shortestPath(distance_matrix, ant_count,iterations)
+        for i in range(NbNodes):
+            self.Visited.append(0)
+            self.ToVisit.append(i)
 
-# This experiement plots and graphs the performance of ACO against different set of pheromone constants
-def Experiement3():
+    def isCompleted(self):
+        for i in range(NbNodes):
+            if self.Visited[i] == 0:
+                return 0
 
-	pheromone_constants = [1,0.01,-10,100,1000]
+        return 1
 
-	for pheromone in pheromone_constants:
-		ant_count = 100
-		iterations = 300
-		PheromoneConstant = pheromone
-		DecayConstant = 0.2
-		Alpha = 1	# Pheromone constant
-		Beta = 1	# Heuristic constant
-		f = open('result.csv','a')
-		f.write('Experiement3\n')
-		f.write('pheromone:'+str(pheromone)+'\n')
-		f.close()
-		distance_matrix = readTsp()
-		globalBest = shortestPath(distance_matrix, ant_count,iterations)
+    def goToNode(self):
+        self.Visited[self.Node.Id] = 1
+        self.Path.append(self.Node.Id)
 
-# This experiement plots and graphs the performance of ACO against different set of alpha and beta
-def Experiement4():
+        # add the distance of the node to which I just arrived
+        self.PathLength += self.NodeDistance
 
-	alpha_list = [0.01,0.25,0.5,0.75,1.0]
-	beta_list = [0.01,0.25,0.5,0.75,1.0]
+        # if we have all nodes visited go to the first node
+        if self.isCompleted():
+            self.Action = 'GoToFirst'
+            firstNode = self.Path[0]
+            # also add the value to the length of the path
+            self.PathLength += Land.Distances[self.Node.Id][firstNode]
+            self.Node = Land.Nodes[self.Path[0]]
 
-	for alpha_val in alpha_list:
-		for beta_val in beta_list:
-			ant_count = 100
-			iterations = 300
-			PheromoneConstant = 1.0
-			DecayConstant = 0.2
-			Alpha = alpha_val	# Pheromone constant
-			Beta = beta_val		# Heuristic constant
-			f = open('result.csv','a')
-			f.write('Experiement4\n')
-			f.write('alpha:'+str(alpha_val)+',beta:'+str(beta_val)+'\n')
-			f.close()
-			distance_matrix = readTsp()
-			globalBest = shortestPath(distance_matrix, ant_count,iterations)
+        else:
+            self.Action = 'SearchNextNode'
+
+    def goToFirst(self):
+        # add the node just to make the path complete
+        self.Path.append(self.Node.Id)
+
+        # precompute the pheromone value
+        self.PheromoneValue = 1 / math.pow(self.PathLength, k)
+
+        # add the distance of the last node
+        if self.PathLength < Land.OptimalPath:
+            print self.Path
+            print self.PathLength
+            Land.OptimalPath = self.PathLength
+        # remove the last added
+        self.Path.pop()
+
+        # start copying the path home
+        self.Action = 'ReturnToStart'
+        to = self.Path.pop()
+        Land.Edges[self.Node.Id][to] += self.PheromoneValue
+        Land.Edges[to][self.Node.Id] += self.PheromoneValue
+        self.Node = Land.Nodes[to]
+
+    def searchNextNode(self):
+        nodeindex = self.Node.Id
+        # the maximal probability
+        pMax = 0
+        p = 0
+
+        # Try to select the best node by the pheromones in the direction
+        # have to iterate over all nodes
+        for i in range(NbNodes):
+            if i != self.Node.Id and self.Visited[i] == 0:
+                d = Land.Distances[self.Node.Id][i]
+
+                # get the value of pheromon on the edge
+                pi = Land.Edges[self.Node.Id][i]
+
+                # To prevent division by zero and get some info
+                # when d = 0 there would be problem in computation of d
+                if d == 0:
+                    print i
+                    print self.Node.Id
+
+                # the quality of the route
+                nij = 1 / d
+
+                pselected = math.pow(pi, alfa) * math.pow(nij, beta)
+
+                # normalization
+                # compute the sum of other options
+                sum = 0
+                for j in range(NbNodes):
+                    if j != self.Node.Id and self.Visited[j] == 0 and j != i:
+                        dj = Land.Distances[self.Node.Id][j]
+                        pij = Land.Edges[self.Node.Id][j]
+                        nj = 1 / dj
+                        pj = math.pow(pij, alfa) * math.pow(nj, beta)
+                        sum += pj
+                if sum > 0:
+                    p = pselected / sum
+
+                # if we have a new best path - then remember the index
+                if p > pMax:
+                    pMax = p
+                    nodeindex = i
+
+                # for the first time when - just choose whatever node
+        while nodeindex == self.Node.Id:
+            nodeindex = random.randint(0, NbNodes - 1)
+
+        # we have a new node - we will add distance
+        self.PathLength += Land.Distances[self.Node.Id][nodeindex]
+        self.Node = Land.Nodes[nodeindex]
+        self.Action = 'GoToNode'
+
+    def returnToStart(self):
+        self.Visited[self.Node.Id] = 0
+
+        if len(self.Path):
+            to = self.Path.pop()
+            # put the pheromon on the edge
+            Land.Edges[self.Node.Id][to] += self.PheromoneValue
+            Land.Edges[to][self.Node.Id] += self.PheromoneValue
+
+            # change my position
+            self.Node = Land.Nodes[to]
+
+        else:
+            # arrived home after the journey
+            self.Action = "SearchNextNode"
+            # set the precomputed value to 0
+            self.PheromoneValue = 0;
+            for i in range(NbNodes):
+                self.ToVisit.append(i)
+            self.PathLength = 0
+
+    def moves(self):
+        # here is the ants move - one of the following actions is always selected
+        if self.Action == 'GoToNode':
+            self.goToNode()
+        if self.Action == 'SearchNextNode':
+            self.searchNextNode()
+        if self.Action == 'ReturnToStart':
+            self.returnToStart()
+        if self.Action == "GoToFirst":
+            self.goToFirst()
+
+
+class Ant_Frame(Generic_Main_Frame):
+    def __init__(self, Parent, NbAgents):
+        # frame with some additional ant capabilities
+        Generic_Main_Frame.__init__(self, Parent, self.oneStep, Wtitle='Ants')
+        self.startGround()
+        self.LastTimeStep = 0
+        self.Counter = 0
+        # create population of agents
+        self.Pop = [Ant('A%d' % IdNb) for IdNb in range(NbAgents)]
+        self.PopSize = NbAgents
+        self.Moves = 0  # counts the number of times agents have moved
+        t = Thread(target=self.redraw)
+        t.start()
+
+    def startGround(self):
+        """ the ground is a 2-D space representing the field where ants wander
+        """
+        self.Ground = Ground(self, Toric=True)
+        self.Ground.scaleX = self.Ground.scaleY = LandSize  # Logical coordinates
+        self.Ground.W = self.Ground.H = LandWindowSize  # Physical coordinates
+        self.Ground.configure(width=self.Ground.W, height=self.Ground.H)
+        self.Ground.pack(expand=Tkinter.YES, fill=Tkinter.BOTH)  # the window shows on the scren
+
+    def oneStep(self):
+        # this function is called back after each simulation step
+        Land.evaporate()
+
+        for agent in self.Pop:
+            agent.moves()
+
+        self.Moves += 1
+        return 0
+
+    def redraw(self):
+        while 1:
+            # the landscape is entirely redrawn
+            self.Ground.erase()  # supposedly destroys all objects on ground
+
+            self.displayNodes(Land.Nodes)
+            self.displayPheromons(Land.EdgesWithPheromons)
+            sleep(1)
+
+    def displayPheromons(self, edges):
+        for edge in edges:
+            coord1 = edge[0]
+            coord2 = edge[1]
+            self.Ground.create_line(coord1[0], coord1[1], coord2[0], coord2[1], fill="red", dash=(4, 4))
+
+    def displayNodes(self, Nodes):
+        for node in Nodes:
+            coord = node.Position
+            self.Ground.create_rectangle(coord[0] - 2, coord[1] - 2, coord[0] + 2, coord[1] + 2, outline='black',
+                                         fill='gray50')
+
+
+def Start():
+    MainWindow = Tkinter.Tk()  # creates the main window
+    MainWindow.title('Ants')
+    MainWindow.GParent = MainWindow
+
+    Frame = Ant_Frame(MainWindow, 80)
+
+    # displaying the window
+    MainWindow.lift()
+    MainWindow.focus_force()
+    # Entering main loop
+    MainWindow.mainloop()  # control is given to the window system
+    OptimalPath = 10000000000
 
 
 if __name__ == "__main__":
-   import cProfile
-   cProfile.run('main()')
+    LandSize = 300
+    NbNodes = 11
 
-    #main()
+    # level of pheromone to show
+    PToShow = 0.004
+
+    # factor which lowers the value given to a path on function of the paths length
+    k = 1
+
+    # evaporation factor
+    theta = 0.07
+
+    # parameter which amplifies the value of the pheromon on the edge (pi^alfa)
+    alfa = 4
+
+    # parameter which amplifies the impact of the quality of the route  ni^beta; ni=1/de
+    beta = 2.5
+
+    Land = Landscape(LandSize)
+    LandWindowSize = 700
+    Start()

@@ -1,10 +1,13 @@
-print "aaaaa"
-a = 5
+import theano
+from theano import tensor
 
-print a
+a = tensor.dscalar()
+b = tensor.dscalar()
 
+c = a + b
+f = theano.function([a,b],c)
 
+result = f(1.5,2.5)
 
-
-aaaaaaaa = 11111
-
+print(f)
+print(result)
