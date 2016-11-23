@@ -2,15 +2,11 @@ from utility_function import*
 
 ## postures ##
 
-# wai_posture_config = [25, -5, -45, 100, 0, -40, 45, 207, -54, -105, 'close']
-# respect_posture_config = [80, -45, -10, 135, 45, 0, 0, 85, -207, 131, 'close']
-# bye_posture_config = [25, -20, 0, 110, -90, -50, -15, 229, -229, -34, 'open']
-# rightInvite_posture_config = [10, -10, 45, 60, 45, 0, 0, 218, -102, -96, 'close']
-
 wai_posture_config = [25, -5, -45, 100, 0, -40, 45, 207, -54, -105, 'close']
 respect_posture_config = [80, -45, -10, 135, 45, 0, 0, 85, -207, 131, 'close']
 bye_posture_config = [25, -20, 0, 110, -90, -50, -15, 229, -229, -34, 'open']
 rightInvite_posture_config = [10, -10, 45, 60, 45, 0, 0, 218, -102, -96, 'close']
+
 
 original_postures_config = []
 original_postures_config.append(wai_posture_config)

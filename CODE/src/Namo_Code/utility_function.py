@@ -5,6 +5,7 @@ import math
 from sympy import symbols, Matrix, Symbol, exp, sin, cos, sqrt, diff
 from operator import itemgetter
 import copy
+import numpy as np
 
 def loadDataFromFile(fileName):
     with open(fileName) as f:
@@ -16,6 +17,51 @@ def saveDataToFile(fileName,data):
     for item in data:
         file_data.write("%s\n"% item)
     file_data.close()
+
+def calKinematicNamo_numpy(degree7Joint,armSide):
+    """ calculate Namo robot kinematic 7DOF Arm
+    :param degree7Joint: input [degree0,1,2,3,4,5,6]
+    :param armSide: input arm side 'L' for Left side, 'R' for Right side
+    :return: Transformation Matrix List [T01,T02,T03,T04,T05,T06,T07,T0E]
+    """
+    ## DH parameter >> alpha[0,1,...6,end effector]
+    alpha = [math.radians(90),math.radians(90),math.radians(-90),math.radians(-90),math.radians(90),math.radians(90),
+             math.radians(-90),math.radians(0)]
+    ## DH parameter >> a[0,1,...6,end effector]
+    a = [0,0,0,0,0,0,0,-140]
+    ## DH parameter >> d[1,2,...7,end effector]
+    d = [182,0,206.5,0,206,0,0,0]
+    if armSide == 'L':
+        d[0] = d[0]*(-1)
+    elif armSide == 'R':
+        d[0] = d[0]*1
+    #print("7dof ="+str(degree7Joint))
+    ## DH parameter >> theta[1,2,...7,end effector]
+    theta = [math.radians(degree7Joint[0] + 90),math.radians(degree7Joint[1] + 90),math.radians(degree7Joint[2] - 90),
+             math.radians(degree7Joint[3]),math.radians(degree7Joint[4] + 90),math.radians(degree7Joint[5] - 90),
+             math.radians(degree7Joint[6]),math.radians(0)]
+    T = {}
+    for i in range(0,8):
+        #print i
+
+        T[i] = np.array([[(cos(theta[i])), (-sin(theta[i])), 0, a[i]],
+                       [(sin(theta[i]) * (cos(alpha[i]))), (cos(theta[i])) * (cos(alpha[i])), (-sin(alpha[i])),
+                        (-sin(alpha[i])) * d[i]],
+                       [(sin(theta[i]) * (sin(alpha[i]))), (cos(theta[i])) * (sin(alpha[i])), (cos(alpha[i])),
+                        (cos(alpha[i])) * d[i]],
+                       [0, 0, 0, 1]])
+
+
+    T01 = T[0]
+    T02 = np.dot(T01,T[1])
+    T03 = np.dot(T02,T[2])
+    T04 = np.dot(T03,T[3])
+    T05 = np.dot(T04,T[4])
+    T06 = np.dot(T05,T[5])
+    T07 = np.dot(T06,T[6])
+    T0E = np.dot(T07,T[7])
+    return [T01,T02,T03,T04,T05,T06,T07,T0E]
+
 
 def calKinematicNamo(degree7Joint,armSide):
     """ calculate Namo robot kinematic 7DOF Arm
