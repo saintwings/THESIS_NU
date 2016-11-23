@@ -4,6 +4,7 @@ from copy import deepcopy
 import math
 from sympy import symbols, Matrix, Symbol, exp, sin, cos, sqrt, diff
 from operator import itemgetter
+import copy
 
 def loadDataFromFile(fileName):
     with open(fileName) as f:
@@ -33,7 +34,7 @@ def calKinematicNamo(degree7Joint,armSide):
         d[0] = d[0]*(-1)
     elif armSide == 'R':
         d[0] = d[0]*1
-    print("7dof ="+str(degree7Joint))
+    #print("7dof ="+str(degree7Joint))
     ## DH parameter >> theta[1,2,...7,end effector]
     theta = [math.radians(degree7Joint[0] + 90),math.radians(degree7Joint[1] + 90),math.radians(degree7Joint[2] - 90),
              math.radians(degree7Joint[3]),math.radians(degree7Joint[4] + 90),math.radians(degree7Joint[5] - 90),
@@ -108,6 +109,12 @@ def cal_Avg_Angle(ref_posture,angle_Amount):
 
     return angle_avg
 
+
+def add_fixed_jointAngle_to_vector(joint_fixed, joint_fixed_value,vector):
+    new_vector = copy.copy(vector)
+    new_vector.insert(joint_fixed, joint_fixed_value)
+    return new_vector
+
 def random_Posture_Angles(angle_limit,angle_amount,random_amount):
     data = []
     for i in range(random_amount):
@@ -126,6 +133,37 @@ def set_FixAngleValueToData(data,angle_fixed_index,fixed_value):
         data_fixed[i][angle_fixed_index] = fixed_value
 
     return data_fixed
+
+
+def cal_Single_Posture_Quaternion(posture, T_matrix_posture):
+    quaternion = calQuaternion(T_matrix_posture[7])
+    return quaternion
+
+def cal_Single_Posture_Score(T_matrix_ref, Q_ref, T_matrix, Q, score_weight):
+    score = []
+
+    Q_diff = [Q_ref[0] - Q[0], Q_ref[1] - Q[1], Q_ref[2] - Q[2], Q_ref[3] - Q[3]]
+
+    norm_Q_diff = math.sqrt(
+        (Q_diff[0] * Q_diff[0]) + (Q_diff[1] * Q_diff[1]) + (Q_diff[2] * Q_diff[2]) + (Q_diff[3] * Q_diff[3]))
+    # elbow_diff =[TMatrix_Target_Posture[3][0,3] - T_Matrix[3][0,3], TMatrix_Target_Posture[3][1,3] - T_Matrix[3][1,3], TMatrix_Target_Posture[3][2,3] - T_Matrix[3][2,3]]
+    norm_elbow_diff = math.sqrt(pow(T_matrix_ref[3][0, 3] - T_matrix[3][0, 3], 2) + pow(
+        T_matrix_ref[3][1, 3] - T_matrix[3][1, 3], 2) + pow(
+        T_matrix_ref[3][2, 3] - T_matrix[3][2, 3], 2))
+    # wrist_diff =[TMatrix_Target_Posture[4][0,3] - T_Matrix[4][0,3], TMatrix_Target_Posture[4][1,3] - T_Matrix[4][1,3], TMatrix_Target_Posture[4][2,3] - T_Matrix[4][2,3]]
+    norm_wrist_diff = math.sqrt(pow(T_matrix_ref[4][0, 3] - T_matrix[4][0, 3], 2) + pow(
+        T_matrix_ref[4][1, 3] - T_matrix[4][1, 3], 2) + pow(
+        T_matrix_ref[4][2, 3] - T_matrix[4][2, 3], 2))
+    sum_diff = norm_Q_diff * score_weight[0] + norm_elbow_diff * score_weight[1] + norm_wrist_diff * score_weight[2]
+
+    #score.append(Q_diff)
+    score.append(norm_Q_diff)
+    score.append(norm_elbow_diff)
+    score.append(norm_wrist_diff)
+    score.append(sum_diff)
+
+    return score
+
 
 def cal_Posture_Score(set_of_posture,reference_posture,score_weight):
     set_of_posture_scored = deepcopy(set_of_posture)
