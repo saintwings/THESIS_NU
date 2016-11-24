@@ -263,7 +263,7 @@ if __name__ == "__main__":
     problem_size = 7 #Dimension of the search space
 
 
-    pop_size_S = 50#50 #Total number of bacteria in the population
+    pop_size_S = 5#50 #Total number of bacteria in the population
     chem_steps_Nc = 100#100 #The number of chemo tactic steps
     swim_length_Ns = 4#4  #The swimming length
     repro_steps_Nre = 4#4 #Number of reproduction steps
@@ -289,6 +289,35 @@ if __name__ == "__main__":
     time_diff = time_stop - time_start
     print("time = " + str(time_diff))
 
+
+
+    ##save file##
+    fileName = "./BFOA_data/FixedIndex = "+str(joint_fixed) + "\t" + str(time.asctime()) + ".txt"
+    file_data = open(fileName, 'w')
+    file_data.write("ref pos\n")
+    for item in ref_postures:
+        file_data.write("%s\n"% item)
+    file_data.write("\nsearch space\n")
+    for item in search_space:
+        file_data.write("%s\n" % item)
+    file_data.write("\nbest set\n")
+    for item in best_set:
+        file_data.write(str(item.vector) + "\tcost = " + str(item.cost) + "\n")
+        #file_data.write("%s\n" % item)
+    file_data.write("\njoint fixed index = " + str(joint_fixed) + "\tvalue = " + str(joint_fixed_value) + "\n")
+    file_data.write("\ntime = "+str(time_diff)+"\n")
+
+    file_data.write("\nParameter\n")
+    file_data.write("\npop_size_S = "+str(pop_size_S))
+    file_data.write("\nchem_steps_Nc = "+str(chem_steps_Nc))
+    file_data.write("\nswim_length_Ns = "+str(swim_length_Ns))
+    file_data.write("\nrepro_steps_Nre = "+str(repro_steps_Nre))
+    file_data.write("\np_eliminate_Ped = "+str(p_eliminate_Ped))
+    file_data.write("\nstep_size_Ci = "+str(step_size_Ci))
+    file_data.write("\nd_attr = "+str(d_attr))
+    file_data.write("\nw_attr = "+str(w_attr))
+    file_data.write("\nh_rep = "+str(h_rep))
+    file_data.write("\nw_rep = "+str(w_rep))
 
 
 ######### 26s
