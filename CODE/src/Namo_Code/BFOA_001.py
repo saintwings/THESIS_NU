@@ -107,6 +107,26 @@ def Search_New_Postures_by_BFOA(ref_postures, joint_fixed, joint_fixed_value,wei
                     best = c_best
 
                 print("best fitness = " + str(best.fitness) + ", cost = " + str(best.cost))
+                cells = sorted(cells, key=lambda Bacteria: Bacteria.sum_nutrients)
+                ## reproduction step ##
+                cells = cells[:len(cells)/2]
+                cells = cells + cells
+
+            ## eliminate step ##
+            print("eliminate step")
+            for i in range(len(cells)):
+                if (random.random() <= p_eliminate_Ped):
+                    cells.pop(i)
+                    new_cell = Bacteria(problem_size, search_space, joint_fixed, joint_fixed_value, rnd, 'rf')
+                    cells.insert(i,new_cell)
+                    #print("generated new cell =" + str(new_cell.vector))
+
+        best_set.append(best)
+
+    return best_set
+
+
+
 
 
 
@@ -186,19 +206,17 @@ def ChemotaxisAndSwim(ref_cell, weight, search_space,
     best = None
 
     for j in range(0, chem_steps_Nc):
+
         moved_cells = []
 
         for i, cell in enumerate(cells):
-            #print("j = " + str(j) + " i cell = " + str(i))
-            #print("best.cost = " + str(best.cost))
+
             sum_nutrients = 0
 
             evaluate(ref_cell, weight, cell, cells, d_attr, w_attr, h_rep, w_rep)
-            if (best == None) or (cell.cost < best.cost):
-                #print("old best = " + str(best.cost))
-                best = cell
-                #print("new best = " + str(best.cost))
 
+            if (best == None) or (cell.cost < best.cost):
+                best = cell
 
             sum_nutrients += cell.fitness
 
@@ -210,6 +228,7 @@ def ChemotaxisAndSwim(ref_cell, weight, search_space,
 
                 if (cell.cost < best.cost):
                    best = cell
+                   print("chemo j = " + str(j) + " f = " + str(best.fitness) + " cost" + str(best.cost))
 
                 if new_cell.fitness > cell.fitness:
                     break
@@ -220,12 +239,11 @@ def ChemotaxisAndSwim(ref_cell, weight, search_space,
                 #t2 = time.clock()
                 #diff_t = t2 - t1
                 #print("t cell" + str(diff_t))
-            #
-            #
+
             cell.sum_nutrients = sum_nutrients
             moved_cells.append(cell)
-            #
-            print("chemo j = " + str(j) + " f = " + str(best.fitness) + " cost" + str(best.cost))
+
+            #print("chemo j = " + str(j) + " f = " + str(best.fitness) + " cost" + str(best.cost))
             cells = moved_cells
 
     return best, cells
@@ -245,10 +263,10 @@ if __name__ == "__main__":
     problem_size = 7 #Dimension of the search space
 
 
-    pop_size_S = 20#50 #Total number of bacteria in the population
-    chem_steps_Nc = 20#100 #The number of chemo tactic steps
-    swim_length_Ns = 4  #The swimming length
-    repro_steps_Nre = 4 #Number of reproduction steps
+    pop_size_S = 50#50 #Total number of bacteria in the population
+    chem_steps_Nc = 100#100 #The number of chemo tactic steps
+    swim_length_Ns = 4#4  #The swimming length
+    repro_steps_Nre = 4#4 #Number of reproduction steps
     elim_disp_steps_Ned = 2 #Number of elimination-dispersal event
     p_eliminate_Ped = 0.25 #Elimination-dispersal probability
     step_size_Ci = 5 #The size of the step taken in the random direction specified by the tumble
@@ -258,15 +276,18 @@ if __name__ == "__main__":
     h_rep = d_attr #repulsion coefficient
     w_rep = 10 #repulsion coefficient
 
-    Search_New_Postures_by_BFOA(ref_postures, joint_fixed, joint_fixed_value,posture_weight,
+    best_set = Search_New_Postures_by_BFOA(ref_postures, joint_fixed, joint_fixed_value,posture_weight,
             problem_size, search_space, pop_size_S,
             elim_disp_steps_Ned, repro_steps_Nre, chem_steps_Nc, swim_length_Ns, step_size_Ci, p_eliminate_Ped,
             d_attr, w_attr, h_rep, w_rep)
 
+    for i in range(len(best_set)):
+
+        print("set = "+str(i)+"\tvector = "+str(best_set[i].vector)+"\tcost = "+str(best_set[i].cost))
+
     time_stop = time.time()
-    print time_stop
     time_diff = time_stop - time_start
-    print time_diff
+    print("time = " + str(time_diff))
 
 
 
