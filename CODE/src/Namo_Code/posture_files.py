@@ -19,7 +19,7 @@ avg_angle = cal_Avg_Angle(original_postures_config, 7)
 
 score_weight = [1, 0.001, 0.001]
 
-joint_fixed = 3
+joint_fixed = 6
 joint_fixed_value = avg_angle[joint_fixed]
 
 joint_angle_limit = [[0,135],[-90,0],[-45,45],[0,135],[-90,90],[-50,45],[-45,45]]

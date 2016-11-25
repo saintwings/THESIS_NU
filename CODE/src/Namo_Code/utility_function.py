@@ -388,7 +388,7 @@ def run_GA_Scored_Sorted(data,original_posture_config,angle_limit,score_weight,c
     for i_posture in range(len(original_posture_config)):
         for i_angle in range(len(angle_limit)):
             GA_data_posture_scored_byRefPosture_sorted[i_posture][i_angle].sort(key=itemgetter(10))
-            saveDataToFile('.\\testdata\\gen'+str(generation_count)+'GA_data_posture_scored_byRefPosture_sorted['+str(i_posture)+']['+str(i_angle)+'].txt',GA_data_posture_scored_byRefPosture_sorted[i_posture][i_angle])
+            saveDataToFile('./GA_data/gen'+str(generation_count)+'GA_data_posture_scored_byRefPosture_sorted['+str(i_posture)+']['+str(i_angle)+'].txt',GA_data_posture_scored_byRefPosture_sorted[i_posture][i_angle])
     ###
 
     return GA_data_posture_scored_byRefPosture_sorted

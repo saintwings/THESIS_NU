@@ -68,7 +68,7 @@ random_angle_set_fixed_scored_byRefPosture_sorted = deepcopy(random_angle_set_fi
 for i_posture in range(len(original_posture_config)):
     for i_angle in range(len(random_angle_set_fixed)):
         random_angle_set_fixed_scored_byRefPosture_sorted[i_posture][i_angle].sort(key=itemgetter(10))
-        saveDataToFile('.\\testdata\\'+str(random_amount)+'_random_angle_set_fixed_scored_byRefPosture_sorted['+str(i_posture)+']['+str(i_angle)+'].txt',random_angle_set_fixed_scored_byRefPosture_sorted[i_posture][i_angle])
+        saveDataToFile('./GA_data/'+str(random_amount)+'_random_angle_set_fixed_scored_byRefPosture_sorted['+str(i_posture)+']['+str(i_angle)+'].txt',random_angle_set_fixed_scored_byRefPosture_sorted[i_posture][i_angle])
 
 
 data_GA_input = deepcopy(random_angle_set_fixed_scored_byRefPosture_sorted)

@@ -248,9 +248,7 @@ def ChemotaxisAndSwim(ref_cell, weight, search_space,
 
     return best, cells
 
-
-
-if __name__ == "__main__":
+def loop( popsize):
     #initial
     #problem configuration
     time_start = time.time()
@@ -263,7 +261,7 @@ if __name__ == "__main__":
     problem_size = 7 #Dimension of the search space
 
 
-    pop_size_S = 5#50 #Total number of bacteria in the population
+    pop_size_S = popsize#50 #Total number of bacteria in the population
     chem_steps_Nc = 100#100 #The number of chemo tactic steps
     swim_length_Ns = 4#4  #The swimming length
     repro_steps_Nre = 4#4 #Number of reproduction steps
@@ -292,7 +290,7 @@ if __name__ == "__main__":
 
 
     ##save file##
-    fileName = "./BFOA_data/FixedIndex = "+str(joint_fixed) + "\t" + str(time.asctime()) + ".txt"
+    fileName = "./BFOA_data/FixedIndex = "+str(joint_fixed) + "\t popsize = " +str(pop_size_S) + "\t Date " + str(time.asctime()) + ".txt"
     file_data = open(fileName, 'w')
     file_data.write("ref pos\n")
     for item in ref_postures:
@@ -318,6 +316,14 @@ if __name__ == "__main__":
     file_data.write("\nw_attr = "+str(w_attr))
     file_data.write("\nh_rep = "+str(h_rep))
     file_data.write("\nw_rep = "+str(w_rep))
+    file_data.close()
+
+
+if __name__ == "__main__":
+    for i in range(5):
+        loop(10)
+    for i in range(5):
+        loop(5)
 
 
 ######### 26s
