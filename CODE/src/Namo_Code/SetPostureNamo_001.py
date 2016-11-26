@@ -66,7 +66,8 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         baudrateList = ['9600','115200','1000000']
         self.ui.baudrate_comboBox.addItems(baudrateList)
 
-        postureList = ['unknown','Wai','SideInvite','Bye','Salute','p1','p2','p3','p4','p5','p6','p7','p8','p9','p10']
+        #postureList = ['unknown','Wai','SideInvite','Bye','Salute','p1','p2','p3','p4','p5','p6','p7','p8','p9','p10']
+        postureList = ['Salute_0', 'Salute_1', 'Salute_2', 'Salute_3', 'Salute_4', 'Salute_5', 'Salute_6', 'Salute_7', 'Salute_8', 'Salute_9']
         self.ui.posture_comboBox.addItems(postureList)
 
         keyframeList = ['Keyframe1','Keyframe2','Keyframe3','Keyframe4','Keyframe5','Keyframe6','Keyframe7','Keyframe8','Keyframe9','Keyframe10',
