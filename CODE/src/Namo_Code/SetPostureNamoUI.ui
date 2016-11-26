@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>914</width>
-    <height>675</height>
+    <width>1127</width>
+    <height>751</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QWidget" name="verticalLayoutWidget_7">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>30</y>
-     <width>441</width>
-     <height>201</height>
+     <x>570</x>
+     <y>70</y>
+     <width>531</width>
+     <height>205</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -233,10 +233,10 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>240</y>
-     <width>441</width>
-     <height>433</height>
+     <x>570</x>
+     <y>280</y>
+     <width>531</width>
+     <height>451</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -691,9 +691,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>240</y>
-     <width>441</width>
-     <height>433</height>
+     <y>280</y>
+     <width>531</width>
+     <height>451</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -1144,18 +1144,44 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QPushButton" name="loadFile_pushButton">
+   <property name="geometry">
+    <rect>
+     <x>1040</x>
+     <y>40</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Load File</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="saveFile_pushButton">
+   <property name="geometry">
+    <rect>
+     <x>1040</x>
+     <y>10</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Save File</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>60</y>
-     <width>371</width>
-     <height>52</height>
+     <y>70</y>
+     <width>531</width>
+     <height>201</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_8">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="file_label">
         <property name="text">
@@ -1164,20 +1190,34 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="play_label">
+       <widget class="QLabel" name="fileName_label">
         <property name="text">
-         <string>Play</string>
+         <string>File Name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="numOfKeyframe_label">
+        <property name="text">
+         <string>Number of Keyframe</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="numOfKeyframeStatus_label">
+        <property name="text">
+         <string>0</string>
         </property>
        </widget>
       </item>
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QHBoxLayout" name="horizontalLayout_27">
       <item>
-       <widget class="QLabel" name="fileName_label">
+       <widget class="QLabel" name="play_label">
         <property name="text">
-         <string>File Name</string>
+         <string>Play</string>
         </property>
        </widget>
       </item>
@@ -1188,32 +1228,10 @@
         </property>
        </widget>
       </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QLabel" name="numOfKeyframe_label">
-        <property name="text">
-         <string>Number of Keyframe</string>
-        </property>
-       </widget>
-      </item>
       <item>
        <widget class="QPushButton" name="setReady_Button">
         <property name="text">
          <string>Set Ready</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <widget class="QLabel" name="numOfKeyframeStatus_label">
-        <property name="text">
-         <string>0</string>
         </property>
        </widget>
       </item>
@@ -1226,237 +1244,186 @@
       </item>
      </layout>
     </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_18">
+      <item>
+       <widget class="QPushButton" name="deleteKeyframe_pushButton">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="duplicateKeyframe_pushButton">
+        <property name="text">
+         <string>Duplicate</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="previousSwitchKeyframe_pushButton">
+        <property name="text">
+         <string>Previous Switch</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="nextSwitchKeyframe_pushButton">
+        <property name="text">
+         <string>Next Switch</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="SelectedKeyframe_label">
+        <property name="text">
+         <string>Selected Keyframe</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="keyFrame_comboBox"/>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="activeKeyframe_checkBox">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Active Keyframe</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="play_pushButton">
+        <property name="text">
+         <string>Play</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="keyframeTime_label">
+        <property name="text">
+         <string>KF Time =</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="keyframeTime_spinBox"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="setTime_pushButton">
+        <property name="text">
+         <string>Set Time</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="setAll_pushButton">
+        <property name="text">
+         <string>Set All</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="getAll_pushButton">
+        <property name="text">
+         <string>Get All</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="disTAll_pushButton">
+        <property name="text">
+         <string>DisT All</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="horizontalLayoutWidget_5">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>160</y>
-     <width>371</width>
-     <height>31</height>
+     <y>10</y>
+     <width>981</width>
+     <height>51</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QHBoxLayout" name="horizontalLayout_28">
     <item>
-     <widget class="QLabel" name="SelectedKeyframe_label">
-      <property name="text">
-       <string>Selected Keyframe</string>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout_23">
+      <item>
+       <widget class="QLabel" name="postureName_label">
+        <property name="text">
+         <string>Posture Name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="posture_comboBox"/>
+      </item>
+      <item>
+       <widget class="QComboBox" name="posture_number_comboBox"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="loadPosture_pushButton">
+        <property name="text">
+         <string>Load</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="savePosture_pushButton">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="saveCenter_pushButton">
+        <property name="text">
+         <string>Save Center</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
-     <widget class="QComboBox" name="keyFrame_comboBox"/>
-    </item>
-    <item>
-     <widget class="QCheckBox" name="activeKeyframe_checkBox">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>Active Keyframe</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="play_pushButton">
-      <property name="text">
-       <string>Play</string>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout_24">
+      <item>
+       <widget class="QComboBox" name="comport_comboBox"/>
+      </item>
+      <item>
+       <widget class="QComboBox" name="baudrate_comboBox"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="connectionStatus_label">
+        <property name="text">
+         <string>connection Status</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="connect_Button">
+        <property name="text">
+         <string>Connect</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>200</y>
-     <width>422</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_3">
-    <item>
-     <widget class="QLabel" name="keyframeTime_label">
-      <property name="text">
-       <string>KF Time =</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QSpinBox" name="keyframeTime_spinBox"/>
-    </item>
-    <item>
-     <widget class="QPushButton" name="setTime_pushButton">
-      <property name="text">
-       <string>Set Time</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="setAll_pushButton">
-      <property name="text">
-       <string>Set All</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="getAll_pushButton">
-      <property name="text">
-       <string>Get All</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="disTAll_pushButton">
-      <property name="text">
-       <string>DisT All</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget_3">
-   <property name="geometry">
-    <rect>
-     <x>420</x>
-     <y>0</y>
-     <width>441</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_24">
-    <item>
-     <widget class="QComboBox" name="comport_comboBox"/>
-    </item>
-    <item>
-     <widget class="QComboBox" name="baudrate_comboBox"/>
-    </item>
-    <item>
-     <widget class="QLabel" name="connectionStatus_label">
-      <property name="text">
-       <string>connection Status</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="connect_Button">
-      <property name="text">
-       <string>Connect</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>0</y>
-     <width>387</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_23">
-    <item>
-     <widget class="QLabel" name="postureName_label">
-      <property name="text">
-       <string>Posture Name</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QComboBox" name="posture_comboBox"/>
-    </item>
-    <item>
-     <widget class="QPushButton" name="loadPosture_pushButton">
-      <property name="text">
-       <string>Load</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="savePosture_pushButton">
-      <property name="text">
-       <string>Save</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="saveCenter_pushButton">
-      <property name="text">
-       <string>Save Center</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>120</y>
-     <width>371</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_18">
-    <item>
-     <widget class="QPushButton" name="deleteKeyframe_pushButton">
-      <property name="text">
-       <string>Delete</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="duplicateKeyframe_pushButton">
-      <property name="text">
-       <string>Duplicate</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="previousSwitchKeyframe_pushButton">
-      <property name="text">
-       <string>Previous Switch</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="nextSwitchKeyframe_pushButton">
-      <property name="text">
-       <string>Next Switch</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QPushButton" name="loadFile_pushButton">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>30</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Load File</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="saveFile_pushButton">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>30</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Save File</string>
-   </property>
   </widget>
  </widget>
  <resources/>

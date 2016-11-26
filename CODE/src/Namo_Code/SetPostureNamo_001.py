@@ -4,6 +4,7 @@ import time
 import serial
 import sys
 import serial.tools.list_ports
+from configobj import ConfigObj
 
 
 class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
@@ -26,13 +27,14 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         self.int_keyframeSelected = 0
         self.bool_comportConnected = False
         self.int_numberOfKeyframe = 0
-        self.str_fileName = 'Unknown'
+        self.str_fileName = None
+        self.str_fileNameNumber = None
         self.str_comport = 'com3'
         self.str_baudrate = 115200
         self.int_keyframe = 0
         self.int_motorID = 0
         self.bool_activeKeyframe =[False for x in range (30)]
-        file_center = open('motor_center.txt', 'r')
+        file_center = open('./Postures/motor_center.txt', 'r')
         self.int_motorCenterValue = file_center.read()
         file_center.close()
         self.int_motorCenterValue = self.int_motorCenterValue.split('\n')
@@ -40,7 +42,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         #cast motorCenterValue from str to int#
         for x in range (17):
             self.int_motorCenterValue[x] = int(self.int_motorCenterValue[x])
-        file_type = open('motor_type.txt', 'r')
+        file_type = open('./Postures/motor_type.txt', 'r')
         self.str_motorType = file_type.read()
         file_type.close()
         self.str_motorType = self.str_motorType.split('\n')
@@ -66,9 +68,13 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         baudrateList = ['9600','115200','1000000']
         self.ui.baudrate_comboBox.addItems(baudrateList)
 
-        #postureList = ['unknown','Wai','SideInvite','Bye','Salute','p1','p2','p3','p4','p5','p6','p7','p8','p9','p10']
-        postureList = ['Salute_0', 'Salute_1', 'Salute_2', 'Salute_3', 'Salute_4', 'Salute_5', 'Salute_6', 'Salute_7', 'Salute_8', 'Salute_9']
+        postureList = ['Salute','Wai','Bye','SideInvite','p1','p2','p3','p4','p5','p6','p7','p8','p9','p10']
+        postureNumber = ['1','2','3','4','5','6','7','8','9','10']
         self.ui.posture_comboBox.addItems(postureList)
+        self.ui.posture_number_comboBox.addItems(postureNumber)
+
+        self.str_fileName = postureList[0]
+        self.str_fileNameNumber = postureNumber[0]
 
         keyframeList = ['Keyframe1','Keyframe2','Keyframe3','Keyframe4','Keyframe5','Keyframe6','Keyframe7','Keyframe8','Keyframe9','Keyframe10',
                         'Keyframe11','Keyframe12','Keyframe13','Keyframe14','Keyframe15','Keyframe16','Keyframe17','Keyframe18','Keyframe19','Keyframe20',
@@ -84,6 +90,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
         QtCore.QObject.connect(self.ui.keyFrame_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxKeyframe)
         QtCore.QObject.connect(self.ui.posture_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxPosture)
+        QtCore.QObject.connect(self.ui.posture_number_comboBox, QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxPostureNumber)
         QtCore.QObject.connect(self.ui.comport_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxComport)
         QtCore.QObject.connect(self.ui.baudrate_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxBaudrate)
 
@@ -184,7 +191,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
     def OnIndexChange_ComboboxComport(self,text):
         self.str_comport = str(text)
-        print self.str_fileName
+        print self.str_comport
 
     def OnButton_Delete(self):
         #self.ui.keyFrame_comboBox.
@@ -913,40 +920,25 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
     def OnButton_Load(self):
         print "Load"
         print self.str_fileName
+        print self.str_fileNameNumber
 
-        self.ui.fileName_label.setText(self.str_fileName)
+        self.ui.fileName_label.setText(self.str_fileName + self.str_fileNameNumber)
 
-        namePosture = self.str_fileName + '.txt'
-        print namePosture
-
-        file_posture = open(namePosture, 'r')
-        str_load_data = file_posture.read()
-        file_posture.close()
-        str_load_data = str_load_data.split('\n')
-        self.int_numberOfKeyframe = int(str_load_data[0])
-
-        #self.text_atSub0_numberOfKeyframe.SetLabel(str(self.int_numberOfKeyframe))
+        filename = './Postures/' + str(self.str_fileName) + str(self.str_fileNameNumber)
+        #filename = self.str_fileName        print filename
+        config = ConfigObj(filename)
+        self.int_numberOfKeyframe = int(config['Keyframe_Amount'])
         self.ui.numOfKeyframeStatus_label.setText(str(self.int_numberOfKeyframe))
 
-        int_count_data = 1
-        for x in range (self.int_numberOfKeyframe):
-            self.bool_activeKeyframe[x] = True
-            for y in range (17):
-                self.int_motorValue[x][y] = int(str_load_data[int_count_data])
-                int_count_data = int_count_data + 1
-        for z in range (self.int_numberOfKeyframe,30):
-            self.bool_activeKeyframe[z] = False
+        for i in range(int(self.int_numberOfKeyframe)):
+            self.bool_activeKeyframe[i] = True
+            self.int_motorValue[i] = map(int, config['Keyframe_Value']['Keyframe_' + str(i)])
+            self.int_time[i] = int(config['Keyframe_Time'][i])
 
-        nameTime = self.str_fileName + '_time.txt'
+        for i in range(int(self.int_numberOfKeyframe), 30):
+            self.bool_activeKeyframe[i] = False
 
-        file_Time = open(nameTime,'r')
-        str_load_data = file_Time.read()
-        file_Time.close()
-        str_load_data = str_load_data.split('\n')
-        int_count_data = 1
-        for x in range (self.int_numberOfKeyframe):
-            self.int_time[x] = int(str_load_data[int_count_data])
-            int_count_data = int_count_data + 1
+
 
         self.SetValueKeyframeToShow()
 
@@ -954,27 +946,20 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
     def OnButton_Save(self):
         print "Save"
         print self.str_fileName
+        print self.str_fileNameNumber
 
-        self.ui.fileName_label.setText(self.str_fileName)
+        self.ui.fileName_label.setText(self.str_fileName + self.str_fileNameNumber)
 
-        namePosture = self.str_fileName + '.txt'
-        print namePosture
-        file_posture = open(namePosture, 'w')
-        file_posture.write(str(self.int_numberOfKeyframe)+'\n')
-        for x in range (self.int_numberOfKeyframe):
-            #file_frontGetup.write(str(x+1)+'\n')
-            for y in range (17):
-                file_posture.write(str(self.int_motorValue[x][y])+'\n')
+        config = ConfigObj()
+        config.filename = './Postures/' + self.str_fileName + self.str_fileNameNumber
+        config['Posture_Name'] = self.str_fileName + self.str_fileNameNumber
+        config['Keyframe_Amount'] = self.int_numberOfKeyframe
+        config['Keyframe_Time'] = self.int_time[:self.int_numberOfKeyframe]
+        config['Keyframe_Value'] = {}
+        for i in range(self.int_numberOfKeyframe):
+            config['Keyframe_Value']['Keyframe_' + str(i)] = self.int_motorValue[i]
+        config.write()
 
-        file_posture.close()
-
-        nameTime = self.str_fileName + '_time.txt'
-
-        file_Time = open(nameTime,'w')
-        file_Time.write(str(self.int_numberOfKeyframe)+'\n')
-        for x in range (self.int_numberOfKeyframe):
-            file_Time.write(str(self.int_time[x])+'\n')
-        file_Time.close()
 
     def SetMotorCenterLabel(self):
         self.ui.motor1center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id1']]))
@@ -1000,7 +985,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
 
     def OnButton_SaveCenter(self):
-        file_center = open('motor_center.txt', 'w')
+        file_center = open('./Postures/motor_center.txt', 'w')
         self.int_motorCenterValue[self.dic_motorIndexID['id1']] = self.ui.motor1Value_spinBox.value()
         self.int_motorCenterValue[self.dic_motorIndexID['id2']] = self.ui.motor2Value_spinBox.value()
         self.int_motorCenterValue[self.dic_motorIndexID['id3']] = self.ui.motor3Value_spinBox.value()
@@ -1034,6 +1019,11 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
     def OnSelect_ComboboxPosture(self,text):
         self.str_fileName = text
         print self.str_fileName
+
+    def OnSelect_ComboboxPostureNumber(self,text):
+        self.str_fileNameNumber = text
+        print self.str_fileNameNumber
+
     # work 90%
     def OnButton_connect(self):
         print "connect clicked"
