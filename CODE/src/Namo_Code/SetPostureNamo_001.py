@@ -19,8 +19,6 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         self.InitVariable()
         self.InitUI()
         self.SetButtonAndSpinCtrlDisable()
-
-
     # work 50%
     def InitVariable(self):
         self.str_keyframeSelected ='Keyframe1'
@@ -58,8 +56,10 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
                                  'id21':14,'id22':15,'id23':16}
         self.int_time = [20 for x in range (30)]
 
-
-
+        self.int_list_id_motor_left = [1, 2, 3, 4, 5, 6, 7]
+        self.int_list_id_motor_right = [11, 12, 13, 14, 15, 16, 17]
+        self.int_list_id_motor_head = [21, 22, 23]
+        self.int_list_id_motor_all = self.int_list_id_motor_left + self.int_list_id_motor_right + self.int_list_id_motor_head
     # work
     def InitUI(self):
 
@@ -69,17 +69,16 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         self.ui.baudrate_comboBox.addItems(baudrateList)
 
         postureList = ['Salute','Wai','Bye','SideInvite','p1','p2','p3','p4','p5','p6','p7','p8','p9','p10']
-        postureNumber = ['1','2','3','4','5','6','7','8','9','10']
+        postureNumber = [str(i) for i in range(1,11)]
         self.ui.posture_comboBox.addItems(postureList)
         self.ui.posture_number_comboBox.addItems(postureNumber)
 
         self.str_fileName = postureList[0]
         self.str_fileNameNumber = postureNumber[0]
 
-        keyframeList = ['Keyframe1','Keyframe2','Keyframe3','Keyframe4','Keyframe5','Keyframe6','Keyframe7','Keyframe8','Keyframe9','Keyframe10',
-                        'Keyframe11','Keyframe12','Keyframe13','Keyframe14','Keyframe15','Keyframe16','Keyframe17','Keyframe18','Keyframe19','Keyframe20',
-                        'Keyframe21','Keyframe22','Keyframe23','Keyframe24','Keyframe25','Keyframe26','Keyframe27','Keyframe28','Keyframe29','Keyframe30',]
-        self.ui.keyFrame_comboBox.addItems(keyframeList)
+        self.keyframeList = ['Keyframe' + str(i) for i in range(1,31)]
+
+        self.ui.keyFrame_comboBox.addItems(self.keyframeList)
 
         self.ui.connectionStatus_label.setText("Status : Disconnect")
 
@@ -102,92 +101,45 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         QtCore.QObject.connect(self.ui.setReady_Button,QtCore.SIGNAL("clicked()"), self.OnButton_ready)
         QtCore.QObject.connect(self.ui.playAll_Button,QtCore.SIGNAL("clicked()"), self.OnButton_playAll)
         QtCore.QObject.connect(self.ui.setTime_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_time)
-        QtCore.QObject.connect(self.ui.setAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_setAll)
-        QtCore.QObject.connect(self.ui.setLAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_setLAll)
-        QtCore.QObject.connect(self.ui.setRAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_setRAll)
-        QtCore.QObject.connect(self.ui.setHAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_setHAll)
-        QtCore.QObject.connect(self.ui.play_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_play)
 
-        QtCore.QObject.connect(self.ui.motor1Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id1Set)
-        QtCore.QObject.connect(self.ui.motor2Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id2Set)
-        QtCore.QObject.connect(self.ui.motor3Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id3Set)
-        QtCore.QObject.connect(self.ui.motor4Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id4Set)
-        QtCore.QObject.connect(self.ui.motor5Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id5Set)
-        QtCore.QObject.connect(self.ui.motor6Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id6Set)
-        QtCore.QObject.connect(self.ui.motor7Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id7Set)
+        QtCore.QObject.connect(self.ui.play_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_play)
 
-        QtCore.QObject.connect(self.ui.motor11Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id11Set)
-        QtCore.QObject.connect(self.ui.motor12Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id12Set)
-        QtCore.QObject.connect(self.ui.motor13Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id13Set)
-        QtCore.QObject.connect(self.ui.motor14Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id14Set)
-        QtCore.QObject.connect(self.ui.motor15Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id15Set)
-        QtCore.QObject.connect(self.ui.motor16Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id16Set)
-        QtCore.QObject.connect(self.ui.motor17Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id17Set)
+        ## connect button Set ##
+        QtCore.QObject.connect(self.ui.setAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setAll)
+        QtCore.QObject.connect(self.ui.setLAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setLAll)
+        QtCore.QObject.connect(self.ui.setRAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setRAll)
+        QtCore.QObject.connect(self.ui.setHAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setHAll)
 
-        QtCore.QObject.connect(self.ui.motor21Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id21Set)
-        QtCore.QObject.connect(self.ui.motor22Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id22Set)
-        QtCore.QObject.connect(self.ui.motor23Set_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id23Set)
+        for id in self.int_list_id_motor_all:
+            QtCore.QObject.connect(eval("self.ui.motor{}Set_pushButton".format(id)), QtCore.SIGNAL("clicked()"), lambda id=id: self.OnButton_Set(id))
 
+
+        ## connect button get ##
         QtCore.QObject.connect(self.ui.getAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getAll)
         QtCore.QObject.connect(self.ui.getLAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getLAll)
         QtCore.QObject.connect(self.ui.getRAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getRAll)
         QtCore.QObject.connect(self.ui.getHAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getHAll)
 
-        QtCore.QObject.connect(self.ui.motor1Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id1Get)
-        QtCore.QObject.connect(self.ui.motor2Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id2Get)
-        QtCore.QObject.connect(self.ui.motor3Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id3Get)
-        QtCore.QObject.connect(self.ui.motor4Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id4Get)
-        QtCore.QObject.connect(self.ui.motor5Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id5Get)
-        QtCore.QObject.connect(self.ui.motor6Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id6Get)
-        QtCore.QObject.connect(self.ui.motor7Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id7Get)
+        for id in self.int_list_id_motor_all:
+            QtCore.QObject.connect(eval("self.ui.motor{}Get_pushButton".format(id)), QtCore.SIGNAL("clicked()"), lambda id=id: self.OnButton_Get(id))
 
-        QtCore.QObject.connect(self.ui.motor11Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id11Get)
-        QtCore.QObject.connect(self.ui.motor12Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id12Get)
-        QtCore.QObject.connect(self.ui.motor13Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id13Get)
-        QtCore.QObject.connect(self.ui.motor14Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id14Get)
-        QtCore.QObject.connect(self.ui.motor15Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id15Get)
-        QtCore.QObject.connect(self.ui.motor16Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id16Get)
-        QtCore.QObject.connect(self.ui.motor17Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id17Get)
+        ## connect button distorque ##
+        QtCore.QObject.connect(self.ui.disTAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueAll)
+        QtCore.QObject.connect(self.ui.disTLAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueLAll)
+        QtCore.QObject.connect(self.ui.disTRAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueRAll)
+        QtCore.QObject.connect(self.ui.disTHAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueHAll)
 
-        QtCore.QObject.connect(self.ui.motor21Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id21Get)
-        QtCore.QObject.connect(self.ui.motor22Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id22Get)
-        QtCore.QObject.connect(self.ui.motor23Get_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id23Get)
-
-        QtCore.QObject.connect(self.ui.motor1DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id1DisableTorque)
-        QtCore.QObject.connect(self.ui.motor2DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id2DisableTorque)
-        QtCore.QObject.connect(self.ui.motor3DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id3DisableTorque)
-        QtCore.QObject.connect(self.ui.motor4DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id4DisableTorque)
-        QtCore.QObject.connect(self.ui.motor5DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id5DisableTorque)
-        QtCore.QObject.connect(self.ui.motor6DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id6DisableTorque)
-        QtCore.QObject.connect(self.ui.motor7DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id7DisableTorque)
-
-        QtCore.QObject.connect(self.ui.motor11DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id11DisableTorque)
-        QtCore.QObject.connect(self.ui.motor12DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id12DisableTorque)
-        QtCore.QObject.connect(self.ui.motor13DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id13DisableTorque)
-        QtCore.QObject.connect(self.ui.motor14DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id14DisableTorque)
-        QtCore.QObject.connect(self.ui.motor15DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id15DisableTorque)
-        QtCore.QObject.connect(self.ui.motor16DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id16DisableTorque)
-        QtCore.QObject.connect(self.ui.motor17DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id17DisableTorque)
-
-        QtCore.QObject.connect(self.ui.motor21DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id21DisableTorque)
-        QtCore.QObject.connect(self.ui.motor22DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id22DisableTorque)
-        QtCore.QObject.connect(self.ui.motor23DisT_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_id23DisableTorque)
-
-        QtCore.QObject.connect(self.ui.disTAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueAll)
-        QtCore.QObject.connect(self.ui.disTLAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueLAll)
-        QtCore.QObject.connect(self.ui.disTRAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueRAll)
-        QtCore.QObject.connect(self.ui.disTHAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueHAll)
+        for id in self.int_list_id_motor_all:
+            QtCore.QObject.connect(eval("self.ui.motor{}DisT_pushButton".format(id)), QtCore.SIGNAL("clicked()"), lambda id=id: self.OnButton_DisableTorque(id))
 
         QtCore.QObject.connect(self.ui.saveCenter_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_SaveCenter)
 
         self.Search_Comport()
 
-
     def Search_Comport(self):
         ports = list(serial.tools.list_ports.comports())
         for p in ports:
             self.ui.comport_comboBox.addItem(p[0])
-
 
     def OnIndexChange_ComboboxComport(self,text):
         self.str_comport = str(text)
@@ -200,314 +152,51 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         pass
 
     def OnButton_DisableTorqueAll(self):
-        self.setDisableMotorTorque(1)
-        self.setDisableMotorTorque(2)
-        self.setDisableMotorTorque(3)
-        self.setDisableMotorTorque(4)
-        self.setDisableMotorTorque(5)
-        self.setDisableMotorTorque(6)
-        self.setDisableMotorTorque(7)
-
-        self.setDisableMotorTorque(11)
-        self.setDisableMotorTorque(12)
-        self.setDisableMotorTorque(13)
-        self.setDisableMotorTorque(14)
-        self.setDisableMotorTorque(15)
-        self.setDisableMotorTorque(16)
-        self.setDisableMotorTorque(17)
-
-        self.setDisableMotorTorque(21)
-        self.setDisableMotorTorque(22)
-        self.setDisableMotorTorque(23)
+        for id in self.int_list_id_motor_all:
+            self.setDisableMotorTorque(id)
 
     def OnButton_DisableTorqueLAll(self):
-        self.setDisableMotorTorque(1)
-        self.setDisableMotorTorque(2)
-        self.setDisableMotorTorque(3)
-        self.setDisableMotorTorque(4)
-        self.setDisableMotorTorque(5)
-        self.setDisableMotorTorque(6)
-        self.setDisableMotorTorque(7)
+        for id in self.int_list_id_motor_left:
+            self.setDisableMotorTorque(id)
 
     def OnButton_DisableTorqueRAll(self):
-        self.setDisableMotorTorque(11)
-        self.setDisableMotorTorque(12)
-        self.setDisableMotorTorque(13)
-        self.setDisableMotorTorque(14)
-        self.setDisableMotorTorque(15)
-        self.setDisableMotorTorque(16)
-        self.setDisableMotorTorque(17)
+        for id in self.int_list_id_motor_right:
+            self.setDisableMotorTorque(id)
 
     def OnButton_DisableTorqueHAll(self):
-        self.setDisableMotorTorque(21)
-        self.setDisableMotorTorque(22)
-        self.setDisableMotorTorque(23)
+        for id in self.int_list_id_motor_head:
+            self.setDisableMotorTorque(id)
 
+    def OnButton_DisableTorque(self,id):
+        print("dis torque ID = " + str(id))
+        self.setDisableMotorTorque(id)
 
-    def OnButton_id1DisableTorque(self):
-        self.setDisableMotorTorque(1)
-
-    def OnButton_id2DisableTorque(self):
-        self.setDisableMotorTorque(2)
-
-    def OnButton_id3DisableTorque(self):
-        self.setDisableMotorTorque(3)
-
-    def OnButton_id4DisableTorque(self):
-        self.setDisableMotorTorque(4)
-
-    def OnButton_id5DisableTorque(self):
-        self.setDisableMotorTorque(5)
-
-    def OnButton_id6DisableTorque(self):
-        self.setDisableMotorTorque(6)
-
-    def OnButton_id7DisableTorque(self):
-        self.setDisableMotorTorque(7)
-
-    def OnButton_id11DisableTorque(self):
-        self.setDisableMotorTorque(11)
-
-    def OnButton_id12DisableTorque(self):
-        self.setDisableMotorTorque(12)
-
-    def OnButton_id13DisableTorque(self):
-        self.setDisableMotorTorque(13)
-
-    def OnButton_id14DisableTorque(self):
-        self.setDisableMotorTorque(14)
-
-    def OnButton_id15DisableTorque(self):
-        self.setDisableMotorTorque(15)
-
-    def OnButton_id16DisableTorque(self):
-        self.setDisableMotorTorque(16)
-
-    def OnButton_id17DisableTorque(self):
-        self.setDisableMotorTorque(17)
-
-    def OnButton_id21DisableTorque(self):
-        self.setDisableMotorTorque(21)
-
-    def OnButton_id22DisableTorque(self):
-        self.setDisableMotorTorque(22)
-
-    def OnButton_id23DisableTorque(self):
-        self.setDisableMotorTorque(23)
-
-    def OnButton_id1Get(self):
-        self.ui.motor1Value_spinBox.setValue(self.getMotorPosition(1))
-
-    def OnButton_id2Get(self):
-        self.ui.motor2Value_spinBox.setValue(self.getMotorPosition(2))
-
-    def OnButton_id3Get(self):
-        self.ui.motor3Value_spinBox.setValue(self.getMotorPosition(3))
-
-    def OnButton_id4Get(self):
-        self.ui.motor4Value_spinBox.setValue(self.getMotorPosition(4))
-
-    def OnButton_id5Get(self):
-        self.ui.motor5Value_spinBox.setValue(self.getMotorPosition(5))
-
-    def OnButton_id6Get(self):
-        self.ui.motor6Value_spinBox.setValue(self.getMotorPosition(6))
-
-    def OnButton_id7Get(self):
-        self.ui.motor7Value_spinBox.setValue(self.getMotorPosition(7))
-
-    def OnButton_id11Get(self):
-        self.ui.motor11Value_spinBox.setValue(self.getMotorPosition(11))
-
-    def OnButton_id12Get(self):
-        self.ui.motor12Value_spinBox.setValue(self.getMotorPosition(12))
-
-    def OnButton_id13Get(self):
-        self.ui.motor13Value_spinBox.setValue(self.getMotorPosition(13))
-
-    def OnButton_id14Get(self):
-        self.ui.motor14Value_spinBox.setValue(self.getMotorPosition(14))
-
-    def OnButton_id15Get(self):
-        self.ui.motor15Value_spinBox.setValue(self.getMotorPosition(15))
-
-    def OnButton_id16Get(self):
-        self.ui.motor16Value_spinBox.setValue(self.getMotorPosition(16))
-
-    def OnButton_id17Get(self):
-        self.ui.motor17Value_spinBox.setValue(self.getMotorPosition(17))
-
-    def OnButton_id21Get(self):
-        self.ui.motor21Value_spinBox.setValue(self.getMotorPosition(21))
-
-    def OnButton_id22Get(self):
-        self.ui.motor22Value_spinBox.setValue(self.getMotorPosition(22))
-
-    def OnButton_id23Get(self):
-        self.ui.motor23Value_spinBox.setValue(self.getMotorPosition(23))
+    def OnButton_Get(self, id):
+        print("get ID = " + str(id))
+        eval("self.ui.motor{}Value_spinBox.setValue(self.getMotorPosition(id))".format(id))
 
     def OnButton_getAll(self):
-        self.ui.motor1Value_spinBox.setValue(self.getMotorPosition(1))
-        self.ui.motor2Value_spinBox.setValue(self.getMotorPosition(2))
-        self.ui.motor3Value_spinBox.setValue(self.getMotorPosition(3))
-        self.ui.motor4Value_spinBox.setValue(self.getMotorPosition(4))
-        self.ui.motor5Value_spinBox.setValue(self.getMotorPosition(5))
-        self.ui.motor6Value_spinBox.setValue(self.getMotorPosition(6))
-        self.ui.motor7Value_spinBox.setValue(self.getMotorPosition(7))
-
-        self.ui.motor11Value_spinBox.setValue(self.getMotorPosition(11))
-        self.ui.motor12Value_spinBox.setValue(self.getMotorPosition(12))
-        self.ui.motor13Value_spinBox.setValue(self.getMotorPosition(13))
-        self.ui.motor14Value_spinBox.setValue(self.getMotorPosition(14))
-        self.ui.motor15Value_spinBox.setValue(self.getMotorPosition(15))
-        self.ui.motor16Value_spinBox.setValue(self.getMotorPosition(16))
-        self.ui.motor17Value_spinBox.setValue(self.getMotorPosition(17))
-
-        self.ui.motor21Value_spinBox.setValue(self.getMotorPosition(21))
-        self.ui.motor22Value_spinBox.setValue(self.getMotorPosition(22))
-        self.ui.motor23Value_spinBox.setValue(self.getMotorPosition(23))
+        for id in self.int_list_id_motor_all:
+            eval("self.ui.motor{}Value_spinBox.setValue(self.getMotorPosition(id))".format(id))
 
     def OnButton_getLAll(self):
-        self.ui.motor1Value_spinBox.setValue(self.getMotorPosition(1))
-        self.ui.motor2Value_spinBox.setValue(self.getMotorPosition(2))
-        self.ui.motor3Value_spinBox.setValue(self.getMotorPosition(3))
-        self.ui.motor4Value_spinBox.setValue(self.getMotorPosition(4))
-        self.ui.motor5Value_spinBox.setValue(self.getMotorPosition(5))
-        self.ui.motor6Value_spinBox.setValue(self.getMotorPosition(6))
-        self.ui.motor7Value_spinBox.setValue(self.getMotorPosition(7))
+        for id in self.int_list_id_motor_left:
+            eval("self.ui.motor{}Value_spinBox.setValue(self.getMotorPosition(id))".format(id))
 
     def OnButton_getRAll(self):
-        self.ui.motor11Value_spinBox.setValue(self.getMotorPosition(11))
-        self.ui.motor12Value_spinBox.setValue(self.getMotorPosition(12))
-        self.ui.motor13Value_spinBox.setValue(self.getMotorPosition(13))
-        self.ui.motor14Value_spinBox.setValue(self.getMotorPosition(14))
-        self.ui.motor15Value_spinBox.setValue(self.getMotorPosition(15))
-        self.ui.motor16Value_spinBox.setValue(self.getMotorPosition(16))
-        self.ui.motor17Value_spinBox.setValue(self.getMotorPosition(17))
+        for id in self.int_list_id_motor_right:
+            eval("self.ui.motor{}Value_spinBox.setValue(self.getMotorPosition(id))".format(id))
 
     def OnButton_getHAll(self):
-        self.ui.motor21Value_spinBox.setValue(self.getMotorPosition(21))
-        self.ui.motor22Value_spinBox.setValue(self.getMotorPosition(22))
-        self.ui.motor23Value_spinBox.setValue(self.getMotorPosition(23))
+        for id in self.int_list_id_motor_head:
+            eval("self.ui.motor{}Value_spinBox.setValue(self.getMotorPosition(id))".format(id))
 
-    def OnButton_id1Set(self):
+    def OnButton_Set(self, id):
         #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']] = self.ui.motor1Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id1']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']]
-        print self.ui.motor1Value_spinBox.value()
-
-    def OnButton_id2Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']] = self.ui.motor2Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id2']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']]
-        print self.ui.motor2Value_spinBox.value()
-
-    def OnButton_id3Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']] = self.ui.motor3Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id3']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']]
-        print self.ui.motor3Value_spinBox.value()
-
-    def OnButton_id4Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']] = self.ui.motor4Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id4']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']]
-        print self.ui.motor4Value_spinBox.value()
-
-    def OnButton_id5Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']] = self.ui.motor5Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id5']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']]
-        print self.ui.motor5Value_spinBox.value()
-
-    def OnButton_id6Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']] = self.ui.motor6Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id6']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']]
-        print self.ui.motor6Value_spinBox.value()
-
-    def OnButton_id7Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']] = self.ui.motor7Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id7']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']]
-        print self.ui.motor7Value_spinBox.value()
-
-    def OnButton_id11Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']] = self.ui.motor11Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id11']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']]
-        print self.ui.motor11Value_spinBox.value()
-
-    def OnButton_id12Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']] = self.ui.motor12Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id12']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']]
-        print self.ui.motor12Value_spinBox.value()
-
-    def OnButton_id13Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']] = self.ui.motor13Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id13']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']]
-        print self.ui.motor13Value_spinBox.value()
-
-    def OnButton_id14Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']] = self.ui.motor14Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id14']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']]
-        print self.ui.motor14Value_spinBox.value()
-
-    def OnButton_id15Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']] = self.ui.motor15Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id15']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']]
-        print self.ui.motor15Value_spinBox.value()
-
-    def OnButton_id16Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']] = self.ui.motor16Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id16']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']]
-        print self.ui.motor16Value_spinBox.value()
-
-    def OnButton_id17Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']] = self.ui.motor17Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id17']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']]
-        print self.ui.motor17Value_spinBox.value()
-
-    def OnButton_id21Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']] = self.ui.motor21Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id21']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']]
-        print self.ui.motor21Value_spinBox.value()
-
-    def OnButton_id22Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']] = self.ui.motor22Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id22']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']]
-        print self.ui.motor22Value_spinBox.value()
-
-    def OnButton_id23Set(self):
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']] = self.ui.motor23Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']], 1023, 1023)
-        self.int_old_motorValue[self.dic_motorIndexID['id23']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']]
-        print self.ui.motor23Value_spinBox.value()
+        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]] = eval("self.ui.motor{}Value_spinBox.value()".format(id))
+        self.setDeviceMoving( self.str_comport, self.str_baudrate, id, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]], 1023, 1023)
+        self.int_old_motorValue[self.dic_motorIndexID['id' + str(id)]] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]]
+        print eval("self.ui.motor{}Value_spinBox.value()".format(id))
 
     def OnButton_play(self):
 
@@ -962,26 +651,8 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
 
     def SetMotorCenterLabel(self):
-        self.ui.motor1center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id1']]))
-        self.ui.motor2center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id2']]))
-        self.ui.motor3center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id3']]))
-        self.ui.motor4center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id4']]))
-        self.ui.motor5center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id5']]))
-        self.ui.motor6center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id6']]))
-        self.ui.motor7center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id7']]))
-
-        self.ui.motor11center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id11']]))
-        self.ui.motor12center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id12']]))
-        self.ui.motor13center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id13']]))
-        self.ui.motor14center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id14']]))
-        self.ui.motor15center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id15']]))
-        self.ui.motor16center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id16']]))
-        self.ui.motor17center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id17']]))
-
-        self.ui.motor21center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id21']]))
-        self.ui.motor22center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id22']]))
-        self.ui.motor23center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id23']]))
-
+        for id in self.int_list_id_motor_all:
+            self.ui.motor1center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id1']]))
 
 
     def OnButton_SaveCenter(self):
@@ -1477,108 +1148,12 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         self.ui.setAll_pushButton.setEnabled(True)
         self.ui.keyframeTime_spinBox.setEnabled(True)
 
-        self.ui.motor1Value_spinBox.setEnabled(True)
-        self.ui.motor1value_dial.setEnabled(True)
-        self.ui.motor1Set_pushButton.setEnabled(True)
-        self.ui.motor1Get_pushButton.setEnabled(True)
-        self.ui.motor1DisT_pushButton.setEnabled(True)
-
-        self.ui.motor2Value_spinBox.setEnabled(True)
-        self.ui.motor2value_dial.setEnabled(True)
-        self.ui.motor2Set_pushButton.setEnabled(True)
-        self.ui.motor2Get_pushButton.setEnabled(True)
-        self.ui.motor2DisT_pushButton.setEnabled(True)
-
-        self.ui.motor3Value_spinBox.setEnabled(True)
-        self.ui.motor3value_dial.setEnabled(True)
-        self.ui.motor3Set_pushButton.setEnabled(True)
-        self.ui.motor3Get_pushButton.setEnabled(True)
-        self.ui.motor3DisT_pushButton.setEnabled(True)
-
-        self.ui.motor4Value_spinBox.setEnabled(True)
-        self.ui.motor4value_dial.setEnabled(True)
-        self.ui.motor4Set_pushButton.setEnabled(True)
-        self.ui.motor4Get_pushButton.setEnabled(True)
-        self.ui.motor4DisT_pushButton.setEnabled(True)
-
-        self.ui.motor5Value_spinBox.setEnabled(True)
-        self.ui.motor5value_dial.setEnabled(True)
-        self.ui.motor5Set_pushButton.setEnabled(True)
-        self.ui.motor5Get_pushButton.setEnabled(True)
-        self.ui.motor5DisT_pushButton.setEnabled(True)
-
-        self.ui.motor6Value_spinBox.setEnabled(True)
-        self.ui.motor6value_dial.setEnabled(True)
-        self.ui.motor6Set_pushButton.setEnabled(True)
-        self.ui.motor6Get_pushButton.setEnabled(True)
-        self.ui.motor6DisT_pushButton.setEnabled(True)
-
-        self.ui.motor7Value_spinBox.setEnabled(True)
-        self.ui.motor7value_dial.setEnabled(True)
-        self.ui.motor7Set_pushButton.setEnabled(True)
-        self.ui.motor7Get_pushButton.setEnabled(True)
-        self.ui.motor7DisT_pushButton.setEnabled(True)
-
-        self.ui.motor11Value_spinBox.setEnabled(True)
-        self.ui.motor11value_dial.setEnabled(True)
-        self.ui.motor11Set_pushButton.setEnabled(True)
-        self.ui.motor11Get_pushButton.setEnabled(True)
-        self.ui.motor11DisT_pushButton.setEnabled(True)
-
-        self.ui.motor12Value_spinBox.setEnabled(True)
-        self.ui.motor12value_dial.setEnabled(True)
-        self.ui.motor12Set_pushButton.setEnabled(True)
-        self.ui.motor12Get_pushButton.setEnabled(True)
-        self.ui.motor12DisT_pushButton.setEnabled(True)
-
-        self.ui.motor13Value_spinBox.setEnabled(True)
-        self.ui.motor13value_dial.setEnabled(True)
-        self.ui.motor13Set_pushButton.setEnabled(True)
-        self.ui.motor13Get_pushButton.setEnabled(True)
-        self.ui.motor13DisT_pushButton.setEnabled(True)
-
-        self.ui.motor14Value_spinBox.setEnabled(True)
-        self.ui.motor14value_dial.setEnabled(True)
-        self.ui.motor14Set_pushButton.setEnabled(True)
-        self.ui.motor14Get_pushButton.setEnabled(True)
-        self.ui.motor14DisT_pushButton.setEnabled(True)
-
-        self.ui.motor15Value_spinBox.setEnabled(True)
-        self.ui.motor15value_dial.setEnabled(True)
-        self.ui.motor15Set_pushButton.setEnabled(True)
-        self.ui.motor15Get_pushButton.setEnabled(True)
-        self.ui.motor15DisT_pushButton.setEnabled(True)
-
-        self.ui.motor16Value_spinBox.setEnabled(True)
-        self.ui.motor16value_dial.setEnabled(True)
-        self.ui.motor16Set_pushButton.setEnabled(True)
-        self.ui.motor16Get_pushButton.setEnabled(True)
-        self.ui.motor16DisT_pushButton.setEnabled(True)
-
-        self.ui.motor17Value_spinBox.setEnabled(True)
-        self.ui.motor17value_dial.setEnabled(True)
-        self.ui.motor17Set_pushButton.setEnabled(True)
-        self.ui.motor17Get_pushButton.setEnabled(True)
-        self.ui.motor17DisT_pushButton.setEnabled(True)
-
-        self.ui.motor21Value_spinBox.setEnabled(True)
-        self.ui.motor21value_dial.setEnabled(True)
-        self.ui.motor21Set_pushButton.setEnabled(True)
-        self.ui.motor21Get_pushButton.setEnabled(True)
-        self.ui.motor21DisT_pushButton.setEnabled(True)
-
-        self.ui.motor22Value_spinBox.setEnabled(True)
-        self.ui.motor22value_dial.setEnabled(True)
-        self.ui.motor22Set_pushButton.setEnabled(True)
-        self.ui.motor22Get_pushButton.setEnabled(True)
-        self.ui.motor22DisT_pushButton.setEnabled(True)
-
-        self.ui.motor23Value_spinBox.setEnabled(True)
-        self.ui.motor23value_dial.setEnabled(True)
-        self.ui.motor23Set_pushButton.setEnabled(True)
-        self.ui.motor23Get_pushButton.setEnabled(True)
-        self.ui.motor23DisT_pushButton.setEnabled(True)
-
+        for id in self.int_list_id_motor_all:
+            eval("self.ui.motor{}Value_spinBox.setEnabled(True)".format(id))
+            eval("self.ui.motor{}value_dial.setEnabled(True)".format(id))
+            eval("self.ui.motor{}Set_pushButton.setEnabled(True)".format(id))
+            eval("self.ui.motor{}Get_pushButton.setEnabled(True)".format(id))
+            eval("self.ui.motor{}DisT_pushButton.setEnabled(True)".format(id))
 
     def SetButtonAndSpinCtrlDisable(self):
 
@@ -1608,172 +1183,17 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         self.ui.setAll_pushButton.setDisabled(True)
         self.ui.keyframeTime_spinBox.setDisabled(True)
 
-
-        self.ui.motor1Value_spinBox.setDisabled(True)
-        self.ui.motor1value_dial.setDisabled(True)
-        self.ui.motor1Set_pushButton.setDisabled(True)
-        self.ui.motor1Get_pushButton.setDisabled(True)
-        self.ui.motor1DisT_pushButton.setDisabled(True)
-
-        self.ui.motor2Value_spinBox.setDisabled(True)
-        self.ui.motor2value_dial.setDisabled(True)
-        self.ui.motor2Set_pushButton.setDisabled(True)
-        self.ui.motor2Get_pushButton.setDisabled(True)
-        self.ui.motor2DisT_pushButton.setDisabled(True)
-
-        self.ui.motor3Value_spinBox.setDisabled(True)
-        self.ui.motor3value_dial.setDisabled(True)
-        self.ui.motor3Set_pushButton.setDisabled(True)
-        self.ui.motor3Get_pushButton.setDisabled(True)
-        self.ui.motor3DisT_pushButton.setDisabled(True)
-
-        self.ui.motor4Value_spinBox.setDisabled(True)
-        self.ui.motor4value_dial.setDisabled(True)
-        self.ui.motor4Set_pushButton.setDisabled(True)
-        self.ui.motor4Get_pushButton.setDisabled(True)
-        self.ui.motor4DisT_pushButton.setDisabled(True)
-
-        self.ui.motor5Value_spinBox.setDisabled(True)
-        self.ui.motor5value_dial.setDisabled(True)
-        self.ui.motor5Set_pushButton.setDisabled(True)
-        self.ui.motor5Get_pushButton.setDisabled(True)
-        self.ui.motor5DisT_pushButton.setDisabled(True)
-
-        self.ui.motor6Value_spinBox.setDisabled(True)
-        self.ui.motor6value_dial.setDisabled(True)
-        self.ui.motor6Set_pushButton.setDisabled(True)
-        self.ui.motor6Get_pushButton.setDisabled(True)
-        self.ui.motor6DisT_pushButton.setDisabled(True)
-
-        self.ui.motor7Value_spinBox.setDisabled(True)
-        self.ui.motor7value_dial.setDisabled(True)
-        self.ui.motor7Set_pushButton.setDisabled(True)
-        self.ui.motor7Get_pushButton.setDisabled(True)
-        self.ui.motor7DisT_pushButton.setDisabled(True)
-
-        self.ui.motor11Value_spinBox.setDisabled(True)
-        self.ui.motor11value_dial.setDisabled(True)
-        self.ui.motor11Set_pushButton.setDisabled(True)
-        self.ui.motor11Get_pushButton.setDisabled(True)
-        self.ui.motor11DisT_pushButton.setDisabled(True)
-
-        self.ui.motor12Value_spinBox.setDisabled(True)
-        self.ui.motor12value_dial.setDisabled(True)
-        self.ui.motor12Set_pushButton.setDisabled(True)
-        self.ui.motor12Get_pushButton.setDisabled(True)
-        self.ui.motor12DisT_pushButton.setDisabled(True)
-
-        self.ui.motor13Value_spinBox.setDisabled(True)
-        self.ui.motor13value_dial.setDisabled(True)
-        self.ui.motor13Set_pushButton.setDisabled(True)
-        self.ui.motor13Get_pushButton.setDisabled(True)
-        self.ui.motor13DisT_pushButton.setDisabled(True)
-
-        self.ui.motor14Value_spinBox.setDisabled(True)
-        self.ui.motor14value_dial.setDisabled(True)
-        self.ui.motor14Set_pushButton.setDisabled(True)
-        self.ui.motor14Get_pushButton.setDisabled(True)
-        self.ui.motor14DisT_pushButton.setDisabled(True)
-
-        self.ui.motor15Value_spinBox.setDisabled(True)
-        self.ui.motor15value_dial.setDisabled(True)
-        self.ui.motor15Set_pushButton.setDisabled(True)
-        self.ui.motor15Get_pushButton.setDisabled(True)
-        self.ui.motor15DisT_pushButton.setDisabled(True)
-
-        self.ui.motor16Value_spinBox.setDisabled(True)
-        self.ui.motor16value_dial.setDisabled(True)
-        self.ui.motor16Set_pushButton.setDisabled(True)
-        self.ui.motor16Get_pushButton.setDisabled(True)
-        self.ui.motor16DisT_pushButton.setDisabled(True)
-
-        self.ui.motor17Value_spinBox.setDisabled(True)
-        self.ui.motor17value_dial.setDisabled(True)
-        self.ui.motor17Set_pushButton.setDisabled(True)
-        self.ui.motor17Get_pushButton.setDisabled(True)
-        self.ui.motor17DisT_pushButton.setDisabled(True)
-
-        self.ui.motor21Value_spinBox.setDisabled(True)
-        self.ui.motor21value_dial.setDisabled(True)
-        self.ui.motor21Set_pushButton.setDisabled(True)
-        self.ui.motor21Get_pushButton.setDisabled(True)
-        self.ui.motor21DisT_pushButton.setDisabled(True)
-
-        self.ui.motor22Value_spinBox.setDisabled(True)
-        self.ui.motor22value_dial.setDisabled(True)
-        self.ui.motor22Set_pushButton.setDisabled(True)
-        self.ui.motor22Get_pushButton.setDisabled(True)
-        self.ui.motor22DisT_pushButton.setDisabled(True)
-
-        self.ui.motor23Value_spinBox.setDisabled(True)
-        self.ui.motor23value_dial.setDisabled(True)
-        self.ui.motor23Set_pushButton.setDisabled(True)
-        self.ui.motor23Get_pushButton.setDisabled(True)
-        self.ui.motor23DisT_pushButton.setDisabled(True)
+        for id in self.int_list_id_motor_all:
+            eval("self.ui.motor{}Value_spinBox.setDisabled(True)".format(id))
+            eval("self.ui.motor{}value_dial.setDisabled(True)".format(id))
+            eval("self.ui.motor{}Set_pushButton.setDisabled(True)".format(id))
+            eval("self.ui.motor{}Get_pushButton.setDisabled(True)".format(id))
+            eval("self.ui.motor{}DisT_pushButton.setDisabled(True)".format(id))
 
     def GetOrderKeyframe(self):
-        if self.str_keyframeSelected == 'Keyframe1':
-            orderKeyframe = 1
-        elif self.str_keyframeSelected == 'Keyframe2':
-            orderKeyframe = 2
-        elif self.str_keyframeSelected == 'Keyframe3':
-            orderKeyframe = 3
-        elif self.str_keyframeSelected == 'Keyframe4':
-            orderKeyframe = 4
-        elif self.str_keyframeSelected == 'Keyframe5':
-            orderKeyframe = 5
-        elif self.str_keyframeSelected == 'Keyframe6':
-            orderKeyframe = 6
-        elif self.str_keyframeSelected == 'Keyframe7':
-            orderKeyframe = 7
-        elif self.str_keyframeSelected == 'Keyframe8':
-            orderKeyframe = 8
-        elif self.str_keyframeSelected == 'Keyframe9':
-            orderKeyframe = 9
-        elif self.str_keyframeSelected == 'Keyframe10':
-            orderKeyframe = 10
-        elif self.str_keyframeSelected == 'Keyframe11':
-            orderKeyframe = 11
-        elif self.str_keyframeSelected == 'Keyframe12':
-            orderKeyframe = 12
-        elif self.str_keyframeSelected == 'Keyframe13':
-            orderKeyframe = 13
-        elif self.str_keyframeSelected == 'Keyframe14':
-            orderKeyframe = 14
-        elif self.str_keyframeSelected == 'Keyframe15':
-            orderKeyframe = 15
-        elif self.str_keyframeSelected == 'Keyframe16':
-            orderKeyframe = 16
-        elif self.str_keyframeSelected == 'Keyframe17':
-            orderKeyframe = 17
-        elif self.str_keyframeSelected == 'Keyframe18':
-            orderKeyframe = 18
-        elif self.str_keyframeSelected == 'Keyframe19':
-            orderKeyframe = 19
-        elif self.str_keyframeSelected == 'Keyframe20':
-            orderKeyframe = 20
-        elif self.str_keyframeSelected == 'Keyframe21':
-            orderKeyframe = 21
-        elif self.str_keyframeSelected == 'Keyframe22':
-            orderKeyframe = 22
-        elif self.str_keyframeSelected == 'Keyframe23':
-            orderKeyframe = 23
-        elif self.str_keyframeSelected == 'Keyframe24':
-            orderKeyframe = 24
-        elif self.str_keyframeSelected == 'Keyframe25':
-            orderKeyframe = 25
-        elif self.str_keyframeSelected == 'Keyframe26':
-            orderKeyframe = 26
-        elif self.str_keyframeSelected == 'Keyframe27':
-            orderKeyframe = 27
-        elif self.str_keyframeSelected == 'Keyframe28':
-            orderKeyframe = 28
-        elif self.str_keyframeSelected == 'Keyframe29':
-            orderKeyframe = 29
-        elif self.str_keyframeSelected == 'Keyframe30':
-            orderKeyframe = 30
-
-
+        for index, kf in enumerate(self.keyframeList):
+            if self.str_keyframeSelected == kf:
+                orderKeyframe = index+1
         return orderKeyframe
 
 
