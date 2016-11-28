@@ -34,6 +34,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         self.bool_activeKeyframe =[False for x in range (30)]
         file_center = open('./Postures/motor_center.txt', 'r')
         self.int_motorCenterValue = file_center.read()
+        print("motorcenter ="+str(self.int_motorCenterValue))
         file_center.close()
         self.int_motorCenterValue = self.int_motorCenterValue.split('\n')
         print  self.int_motorCenterValue
@@ -652,7 +653,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
     def SetMotorCenterLabel(self):
         for id in self.int_list_id_motor_all:
-            self.ui.motor1center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id1']]))
+            eval("self.ui.motor{}center_label.setText(str(self.int_motorCenterValue[self.dic_motorIndexID['id'+str(id)]]))".format(id))
 
 
     def OnButton_SaveCenter(self):
