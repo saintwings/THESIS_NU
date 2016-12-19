@@ -8,6 +8,9 @@ from time import strftime
 
 
 class ClockApp(App):
+    def build(self):
+        self.icon = 'icon.png'
+
     sw_started = False
     sw_seconds = 0
 
