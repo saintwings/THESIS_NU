@@ -1,0 +1,23 @@
+/tmp/ccy8AbRP.o: In function `main':
+main.cpp:(.text+0x75): undefined reference to `sf::String::String(char const*, std::locale const&)'
+main.cpp:(.text+0x93): undefined reference to `sf::VideoMode::VideoMode(unsigned int, unsigned int, unsigned int)'
+main.cpp:(.text+0xc6): undefined reference to `sf::RenderWindow::RenderWindow(sf::VideoMode, sf::String const&, unsigned int, sf::ContextSettings const&)'
+main.cpp:(.text+0x100): undefined reference to `sf::CircleShape::CircleShape(float, unsigned long)'
+main.cpp:(.text+0x10c): undefined reference to `sf::Color::Green'
+main.cpp:(.text+0x114): undefined reference to `sf::Shape::setFillColor(sf::Color const&)'
+main.cpp:(.text+0x123): undefined reference to `sf::Window::isOpen() const'
+main.cpp:(.text+0x144): undefined reference to `sf::Window::pollEvent(sf::Event&)'
+main.cpp:(.text+0x161): undefined reference to `sf::Window::close()'
+main.cpp:(.text+0x187): undefined reference to `sf::Color::Color(unsigned char, unsigned char, unsigned char, unsigned char)'
+main.cpp:(.text+0x1a4): undefined reference to `sf::RenderTarget::clear(sf::Color const&)'
+main.cpp:(.text+0x1bb): undefined reference to `sf::RenderStates::Default'
+main.cpp:(.text+0x1c6): undefined reference to `sf::RenderTarget::draw(sf::Drawable const&, sf::RenderStates const&)'
+main.cpp:(.text+0x1d5): undefined reference to `sf::Window::display()'
+main.cpp:(.text+0x1fd): undefined reference to `sf::RenderWindow::~RenderWindow()'
+main.cpp:(.text+0x236): undefined reference to `sf::RenderWindow::~RenderWindow()'
+main.cpp:(.text+0x27b): undefined reference to `sf::RenderWindow::~RenderWindow()'
+/tmp/ccy8AbRP.o: In function `sf::CircleShape::~CircleShape()':
+main.cpp:(.text._ZN2sf11CircleShapeD2Ev[_ZN2sf11CircleShapeD5Ev]+0xd): undefined reference to `vtable for sf::CircleShape'
+main.cpp:(.text._ZN2sf11CircleShapeD2Ev[_ZN2sf11CircleShapeD5Ev]+0x19): undefined reference to `vtable for sf::CircleShape'
+main.cpp:(.text._ZN2sf11CircleShapeD2Ev[_ZN2sf11CircleShapeD5Ev]+0x2d): undefined reference to `sf::Shape::~Shape()'
+collect2: error: ld returned 1 exit status

@@ -35,7 +35,6 @@ class ClockApp(App):
         if self.sw_started:
             self.root.ids.start_stop.text = 'Start'
             self.sw_started = False
-
         self.sw_seconds = 0
 
 if __name__ == '__main__':
