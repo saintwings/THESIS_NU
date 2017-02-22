@@ -1,5 +1,6 @@
-from PyQt4 import QtCore, QtGui
-from SetPostureNamoUI import Ui_Form
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QObject, pyqtSignal
+from SetPostureNamoUI_QT5 import Ui_Form
 import time
 import serial
 import sys
@@ -7,18 +8,24 @@ import serial.tools.list_ports
 from configobj import ConfigObj
 
 
-class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
+class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
+    int_id_L = [1, 2, 3, 4, 5, 6, 7]
+    int_id_R = [11, 12, 13, 14, 15, 16, 17]
+    int_id_H = [41, 42, 43]
+    int_id_All = int_id_L + int_id_R + int_id_H
+    int_motor_Amount = 17
+    int_keyframe_Amount = 30
+    int_time_Initial = 20
+
+
     def __init__(self,parent = None):
         super(NamoMainWindow, self).__init__(parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-
-        #self.ctimer = QtCore.QTimer()
-        #self.stimer = QtCore.QTimer()
-
         self.InitVariable()
         self.InitUI()
         self.SetButtonAndSpinCtrlDisable()
+
     # work 50%
     def InitVariable(self):
         self.str_keyframeSelected ='Keyframe1'
@@ -37,7 +44,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         print("motorcenter ="+str(self.int_motorCenterValue))
         file_center.close()
         self.int_motorCenterValue = self.int_motorCenterValue.split('\n')
-        print  self.int_motorCenterValue
+        print(self.int_motorCenterValue)
         #cast motorCenterValue from str to int#
         for x in range (17):
             self.int_motorCenterValue[x] = int(self.int_motorCenterValue[x])
@@ -86,13 +93,21 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         #self.ui.keyframeTime_spinBox.setValue(10)
 
         #QtCore.QObject.connect(self.ui.activeKeyframe_checkBox,QtCore.SIGNAL("stateChanged(int)"), self.ActiveKeyframe_CheckBox)
-        QtCore.QObject.connect(self.ui.activeKeyframe_checkBox,QtCore.SIGNAL("clicked()"), self.ActiveKeyframe_CheckBox)
 
-        QtCore.QObject.connect(self.ui.keyFrame_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxKeyframe)
-        QtCore.QObject.connect(self.ui.posture_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxPosture)
-        QtCore.QObject.connect(self.ui.posture_number_comboBox, QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxPostureNumber)
-        QtCore.QObject.connect(self.ui.comport_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxComport)
-        QtCore.QObject.connect(self.ui.baudrate_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxBaudrate)
+        #### edit for qt5 ####
+
+        self.ui.activeKeyframe_checkBox.clicked.connect(self.ActiveKeyframe_CheckBox)
+        self.ui.keyFrame_comboBox.activated[str].connect(self.OnSelect_ComboboxKeyframe)
+        self.ui.posture_comboBox.activated[str].connect(self.OnSelect_ComboboxPosture)
+        self.ui.posture_number_comboBox.activated[str].connect(self.OnSelect_ComboboxPostureNumber)
+        self.ui.comport_comboBox.activated[str].connect(self.OnSelect_ComboboxComport)
+        self.ui.baudrate_comboBox.activated[str].connect(self.OnSelect_ComboboxBaudrate)
+        #QtCore.QObject.connect(self.ui.activeKeyframe_checkBox,QtCore.SIGNAL("clicked()"), self.ActiveKeyframe_CheckBox)
+        #QtCore.QObject.connect(self.ui.keyFrame_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxKeyframe)
+        #QtCore.QObject.connect(self.ui.posture_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxPosture)
+        #QtCore.QObject.connect(self.ui.posture_number_comboBox, QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxPostureNumber)
+        #QtCore.QObject.connect(self.ui.comport_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxComport)
+        #QtCore.QObject.connect(self.ui.baudrate_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxBaudrate)
 
         QtCore.QObject.connect(self.ui.comport_comboBox,QtCore.SIGNAL('currentIndexChanged(QString)'),self.OnIndexChange_ComboboxComport)
 
@@ -144,7 +159,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
     def OnIndexChange_ComboboxComport(self,text):
         self.str_comport = str(text)
-        print self.str_comport
+        print(self.str_comport)
 
     def OnButton_Delete(self):
         #self.ui.keyFrame_comboBox.
@@ -197,7 +212,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]] = eval("self.ui.motor{}Value_spinBox.value()".format(id))
         self.setDeviceMoving( self.str_comport, self.str_baudrate, id, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]], 1023, 1023)
         self.int_old_motorValue[self.dic_motorIndexID['id' + str(id)]] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]]
-        print eval("self.ui.motor{}Value_spinBox.value()".format(id))
+        print (eval("self.ui.motor{}Value_spinBox.value()".format(id)))
 
     def OnButton_play(self):
 
@@ -228,9 +243,9 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         time_finish = time_start + float(self.int_time[self.GetOrderKeyframe() - 1])/10
         in_time = True
 
-        print time_start
-        print time_finish
-        print 'Wait....'
+        print(time_start)
+        print(time_finish)
+        print('Wait....')
         while in_time:
             time_current = time.time()
             if time_current >= time_finish:
@@ -297,7 +312,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
 
 
-        print 'Finished'
+        print('Finished')
         self.SetButtonAndSpinCtrlEnable()
 
     def OnButton_setLAll(self):
@@ -443,19 +458,19 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
     def OnButton_time(self):
         self.int_time[self.GetOrderKeyframe() - 1] = self.ui.keyframeTime_spinBox.value()
-        print self.int_time[self.GetOrderKeyframe() - 1]
+        print(self.int_time[self.GetOrderKeyframe() - 1])
 
     def OnButton_ready(self):
         if self.int_numberOfKeyframe == 0:
-            print 'Error!! Number of keyframe = 0 '
+            print('Error!! Number of keyframe = 0 ')
         else:
             time_start = time.time()
             time_finish = time_start + float(self.int_time[0])/10
             in_time = True
 
-            print time_start
-            print time_finish
-            print 'Wait....'
+            print(time_start)
+            print(time_finish)
+            print('Wait....')
             while in_time:
                 time_current = time.time()
                 if time_current >= time_finish:
@@ -518,12 +533,12 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
                     self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id23']],self.int_old_motorValue[self.dic_motorIndexID['id23']],time_finish,time_start,time_current), 200, 200)
 
                 time.sleep(0.015)
-            print 'Finished'
+            print('Finished')
 
     def OnButton_playAll(self):
 
         if self.int_numberOfKeyframe == 0:
-            print 'Error!! Number of keyframe = 0 '
+            print('Error!! Number of keyframe = 0 ')
         else:
             self.SetButtonAndSpinCtrlDisable()
             for x in range(self.int_numberOfKeyframe):
@@ -531,11 +546,11 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
                 time_finish = time_start + float(self.int_time[x])/10
                 in_time = True
 
-                print time_start
-                print time_finish
-                print 'keyframe = '+ str(x+1)
-                print 'Time = '+ str(self.int_time[x])
-                print 'Wait....'
+                print(time_start)
+                print(time_finish)
+                print('keyframe = '+ str(x+1))
+                print('Time = '+ str(self.int_time[x]))
+                print('Wait....')
                 while in_time:
                     time_current = time.time()
                     if time_current >= time_finish:
@@ -603,14 +618,14 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
 
 
-                print 'Finished'
+                print('Finished')
             self.SetButtonAndSpinCtrlEnable()
 
 
     def OnButton_Load(self):
-        print "Load"
-        print self.str_fileName
-        print self.str_fileNameNumber
+        print("Load")
+        print(self.str_fileName)
+        print(self.str_fileNameNumber)
 
         self.ui.fileName_label.setText(self.str_fileName + self.str_fileNameNumber)
 
@@ -634,9 +649,9 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
 
     def OnButton_Save(self):
-        print "Save"
-        print self.str_fileName
-        print self.str_fileNameNumber
+        print("Save")
+        print(self.str_fileName)
+        print(self.str_fileNameNumber)
 
         self.ui.fileName_label.setText(self.str_fileName + self.str_fileNameNumber)
 
@@ -690,15 +705,15 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
     def OnSelect_ComboboxPosture(self,text):
         self.str_fileName = text
-        print self.str_fileName
+        print(self.str_fileName)
 
     def OnSelect_ComboboxPostureNumber(self,text):
         self.str_fileNameNumber = text
-        print self.str_fileNameNumber
+        print(self.str_fileNameNumber)
 
     # work 90%
     def OnButton_connect(self):
-        print "connect clicked"
+        print("connect clicked")
         if self.bool_comportConnected == False:
             self.bool_comportConnected = True
             self.serialDevice = serial.Serial(self.str_comport, self.str_baudrate,8,'N',1,0,0,0,0)
@@ -712,15 +727,15 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
     def OnSelect_ComboboxComport(self,text):
         self.str_comport = str(text)
-        print self.str_comport
+        print(self.str_comport)
 
     def OnSelect_ComboboxBaudrate(self,text):
         self.str_baudrate = str(text)
-        print self.str_baudrate
+        print(self.str_baudrate)
 
     def OnSelect_ComboboxKeyframe(self,text):
         self.str_keyframeSelected = text
-        print self.str_keyframeSelected
+        print(self.str_keyframeSelected)
         self.SetValueKeyframeToShow()
 
     # work 50%
@@ -788,10 +803,10 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
         self.int_keyframeSelected = keyframe
 
-        print "keyframe selected = "
-        print self.int_keyframeSelected
+        print("keyframe selected = ")
+        print(self.int_keyframeSelected)
         #self.ui.activeKeyframe_checkBox.setChecked(self.bool_activeKeyframe[keyframe-1])
-        print self.bool_activeKeyframe
+        print(self.bool_activeKeyframe)
 
         if self.bool_activeKeyframe[keyframe-1] == True:
             self.ui.activeKeyframe_checkBox.setChecked(2)
@@ -867,10 +882,10 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
 
 
     def ActiveKeyframe_CheckBox(self):
-        print self.ui.activeKeyframe_checkBox.checkState()
+        print(self.ui.activeKeyframe_checkBox.checkState())
 
         if self.ui.activeKeyframe_checkBox.checkState() == 2:
-            print"Checked"
+            print("Checked")
 
             if self.str_keyframeSelected == 'Keyframe1':
                 #self.bool_activeKeyframe[0] = True
@@ -997,7 +1012,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
             self.ui.numOfKeyframeStatus_label.setText(str(self.int_numberOfKeyframe))
 
         else:
-            print "Unchecked"
+            print("Unchecked")
             if self.str_keyframeSelected == 'Keyframe1':
                 #self.bool_activeKeyframe[0] = False
                 self.CheckNextKeyframe(1)
@@ -1232,7 +1247,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
                                     queryData = ord(responsePacket[5])
                             #print "Return data:", queryData
                     else:
-                            print "Error response:", responseID, errorByte
+                            print("Error response:", responseID, errorByte)
             return queryData
 
     def get(self,deviceID, address, Length):
@@ -1253,7 +1268,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
                     hiByte = int(value/256)
                     loByte = value%256
             else:
-                    print "rxPacketConversion: value out of range", value
+                    print("rxPacketConversion: value out of range", value)
             return loByte, hiByte
 
     def exPacketConversion( self,value ):
@@ -1261,7 +1276,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
                     hiByte = int(value/256)
                     loByte = value%256
             else:
-                    print "exPacketConversion: value out of range", value
+                    print("exPacketConversion: value out of range", value)
             return loByte, hiByte
 
     def setDisableMotorTorque(self,deviceID):
@@ -1325,7 +1340,7 @@ class NamoMainWindow(QtGui.QMainWindow,Ui_Form):
         return motor_value
 
 if __name__ == "__main__":
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     MainWindow = NamoMainWindow()
 
 
