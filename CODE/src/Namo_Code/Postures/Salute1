@@ -1,0 +1,5 @@
+Posture_Name = Salute1
+Keyframe_Amount = 1
+Keyframe_Time = 20,
+[Keyframe_Value]
+Keyframe_0 = 2046, 2051, 2045, 2077, 2051, 2048, 2048, 2105, 2036, 2041, 2044, 2080, 2062, 2553, 1009, 500, 500

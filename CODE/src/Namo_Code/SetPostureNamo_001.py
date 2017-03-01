@@ -9,13 +9,13 @@ from configobj import ConfigObj
 
 
 class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
-    int_id_L = [1, 2, 3, 4, 5, 6, 7]
-    int_id_R = [11, 12, 13, 14, 15, 16, 17]
-    int_id_H = [41, 42, 43]
-    int_id_All = int_id_L + int_id_R + int_id_H
-    int_motor_Amount = 17
-    int_keyframe_Amount = 30
-    int_time_Initial = 20
+    #int_id_L = [1, 2, 3, 4, 5, 6, 7]
+    #int_id_R = [11, 12, 13, 14, 15, 16, 17]
+    #int_id_H = [41, 42, 43]
+    #int_id_All = int_id_L + int_id_R + int_id_H
+    #int_motor_Amount = 17
+    #int_keyframe_Amount = 30
+    #int_time_Initial = 20
 
 
     def __init__(self,parent = None):
@@ -109,46 +109,72 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         #QtCore.QObject.connect(self.ui.comport_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxComport)
         #QtCore.QObject.connect(self.ui.baudrate_comboBox,QtCore.SIGNAL('activated(QString)'),self.OnSelect_ComboboxBaudrate)
 
-        QtCore.QObject.connect(self.ui.comport_comboBox,QtCore.SIGNAL('currentIndexChanged(QString)'),self.OnIndexChange_ComboboxComport)
+        self.ui.comport_comboBox.currentIndexChanged[str].connect(self.OnIndexChange_ComboboxComport)
+        #QtCore.QObject.connect(self.ui.comport_comboBox,QtCore.SIGNAL('currentIndexChanged(QString)'),self.OnIndexChange_ComboboxComport)
 
-        QtCore.QObject.connect(self.ui.connect_Button,QtCore.SIGNAL("clicked()"), self.OnButton_connect)
-        QtCore.QObject.connect(self.ui.loadPosture_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_Load)
-        QtCore.QObject.connect(self.ui.savePosture_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_Save)
-        QtCore.QObject.connect(self.ui.setReady_Button,QtCore.SIGNAL("clicked()"), self.OnButton_ready)
-        QtCore.QObject.connect(self.ui.playAll_Button,QtCore.SIGNAL("clicked()"), self.OnButton_playAll)
-        QtCore.QObject.connect(self.ui.setTime_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_time)
+        self.ui.connect_Button.clicked.connect(self.OnButton_connect)
+        self.ui.loadPosture_pushButton.clicked.connect(self.OnButton_Load)
+        self.ui.savePosture_pushButton.clicked.connect(self.OnButton_Save)
+        self.ui.setReady_Button.clicked.connect(self.OnButton_ready)
+        self.ui.playAll_Button.clicked.connect(self.OnButton_playAll)
+        self.ui.setTime_pushButton.clicked.connect(self.OnButton_time)
+        #QtCore.QObject.connect(self.ui.connect_Button,QtCore.SIGNAL("clicked()"), self.OnButton_connect)
+        #QtCore.QObject.connect(self.ui.loadPosture_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_Load)
+        #QtCore.QObject.connect(self.ui.savePosture_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_Save)
+        #QtCore.QObject.connect(self.ui.setReady_Button,QtCore.SIGNAL("clicked()"), self.OnButton_ready)
+        #QtCore.QObject.connect(self.ui.playAll_Button,QtCore.SIGNAL("clicked()"), self.OnButton_playAll)
+        #QtCore.QObject.connect(self.ui.setTime_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_time)
 
-        QtCore.QObject.connect(self.ui.play_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_play)
+        self.ui.play_pushButton.clicked.connect(self.OnButton_play)
+        #QtCore.QObject.connect(self.ui.play_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_play)
 
         ## connect button Set ##
-        QtCore.QObject.connect(self.ui.setAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setAll)
-        QtCore.QObject.connect(self.ui.setLAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setLAll)
-        QtCore.QObject.connect(self.ui.setRAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setRAll)
-        QtCore.QObject.connect(self.ui.setHAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setHAll)
+        self.ui.setAll_pushButton.clicked.connect(self.OnButton_setAll)
+        self.ui.setLAll_pushButton.clicked.connect(self.OnButton_setLAll)
+        self.ui.setRAll_pushButton.clicked.connect(self.OnButton_setRAll)
+        self.ui.setHAll_pushButton.clicked.connect(self.OnButton_setHAll)
+        #QtCore.QObject.connect(self.ui.setAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setAll)
+        #QtCore.QObject.connect(self.ui.setLAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setLAll)
+        #QtCore.QObject.connect(self.ui.setRAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setRAll)
+        #QtCore.QObject.connect(self.ui.setHAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_setHAll)
 
         for id in self.int_list_id_motor_all:
-            QtCore.QObject.connect(eval("self.ui.motor{}Set_pushButton".format(id)), QtCore.SIGNAL("clicked()"), lambda id=id: self.OnButton_Set(id))
+            print("id in list = ",id)
+            #print(eval("self.ui.motor{}Set_pushButton".format(id)))
+            eval("self.ui.motor{}Set_pushButton".format(id)).clicked.connect(lambda ignore, id=id: self.OnButton_Set(id))
+            #QtCore.QObject.connect(eval("self.ui.motor{}Set_pushButton".format(id)), QtCore.SIGNAL("clicked()"), lambda id=id: self.OnButton_Set(id))
 
 
         ## connect button get ##
-        QtCore.QObject.connect(self.ui.getAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getAll)
-        QtCore.QObject.connect(self.ui.getLAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getLAll)
-        QtCore.QObject.connect(self.ui.getRAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getRAll)
-        QtCore.QObject.connect(self.ui.getHAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getHAll)
+        self.ui.getAll_pushButton.clicked.connect(self.OnButton_getAll)
+        self.ui.getLAll_pushButton.clicked.connect(self.OnButton_getLAll)
+        self.ui.getRAll_pushButton.clicked.connect(self.OnButton_getRAll)
+        self.ui.getHAll_pushButton.clicked.connect(self.OnButton_getHAll)
+        #QtCore.QObject.connect(self.ui.getAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getAll)
+        #QtCore.QObject.connect(self.ui.getLAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getLAll)
+        #QtCore.QObject.connect(self.ui.getRAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getRAll)
+        #QtCore.QObject.connect(self.ui.getHAll_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_getHAll)
 
         for id in self.int_list_id_motor_all:
-            QtCore.QObject.connect(eval("self.ui.motor{}Get_pushButton".format(id)), QtCore.SIGNAL("clicked()"), lambda id=id: self.OnButton_Get(id))
+            eval("self.ui.motor{}Get_pushButton".format(id)).clicked.connect(lambda ignore,  id=id: self.OnButton_Get(id))
+            #QtCore.QObject.connect(eval("self.ui.motor{}Get_pushButton".format(id)), QtCore.SIGNAL("clicked()"), lambda id=id: self.OnButton_Get(id))
 
         ## connect button distorque ##
-        QtCore.QObject.connect(self.ui.disTAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueAll)
-        QtCore.QObject.connect(self.ui.disTLAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueLAll)
-        QtCore.QObject.connect(self.ui.disTRAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueRAll)
-        QtCore.QObject.connect(self.ui.disTHAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueHAll)
+        self.ui.disTAll_pushButton.clicked.connect(self.OnButton_DisableTorqueAll)
+        self.ui.disTLAll_pushButton.clicked.connect(self.OnButton_DisableTorqueLAll)
+        self.ui.disTRAll_pushButton.clicked.connect(self.OnButton_DisableTorqueRAll)
+        self.ui.disTHAll_pushButton.clicked.connect(self.OnButton_DisableTorqueHAll)
+        #QtCore.QObject.connect(self.ui.disTAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueAll)
+        #QtCore.QObject.connect(self.ui.disTLAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueLAll)
+        #QtCore.QObject.connect(self.ui.disTRAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueRAll)
+        #QtCore.QObject.connect(self.ui.disTHAll_pushButton, QtCore.SIGNAL("clicked()"), self.OnButton_DisableTorqueHAll)
 
         for id in self.int_list_id_motor_all:
-            QtCore.QObject.connect(eval("self.ui.motor{}DisT_pushButton".format(id)), QtCore.SIGNAL("clicked()"), lambda id=id: self.OnButton_DisableTorque(id))
+            eval("self.ui.motor{}DisT_pushButton".format(id)).clicked.connect(lambda ignore,  id=id: self.OnButton_DisableTorque(id))
+            #QtCore.QObject.connect(eval("self.ui.motor{}DisT_pushButton".format(id)), QtCore.SIGNAL("clicked()"), lambda id=id: self.OnButton_DisableTorque(id))
 
-        QtCore.QObject.connect(self.ui.saveCenter_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_SaveCenter)
+        self.ui.saveCenter_pushButton.clicked.connect(self.OnButton_SaveCenter)
+        #QtCore.QObject.connect(self.ui.saveCenter_pushButton,QtCore.SIGNAL("clicked()"), self.OnButton_SaveCenter)
 
         self.Search_Comport()
 
@@ -168,23 +194,27 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         pass
 
     def OnButton_DisableTorqueAll(self):
+        print("DisableTorqueAll")
         for id in self.int_list_id_motor_all:
             self.setDisableMotorTorque(id)
 
     def OnButton_DisableTorqueLAll(self):
+        print("DisableTorque_L_All")
         for id in self.int_list_id_motor_left:
             self.setDisableMotorTorque(id)
 
     def OnButton_DisableTorqueRAll(self):
+        print("DisableTorque_R_All")
         for id in self.int_list_id_motor_right:
             self.setDisableMotorTorque(id)
 
     def OnButton_DisableTorqueHAll(self):
+        print("DisableTorque_H_All")
         for id in self.int_list_id_motor_head:
             self.setDisableMotorTorque(id)
 
     def OnButton_DisableTorque(self,id):
-        print("dis torque ID = " + str(id))
+        print("DisableTorque ID " + str(id))
         self.setDisableMotorTorque(id)
 
     def OnButton_Get(self, id):
@@ -192,23 +222,28 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         eval("self.ui.motor{}Value_spinBox.setValue(self.getMotorPosition(id))".format(id))
 
     def OnButton_getAll(self):
+        print("getAll")
         for id in self.int_list_id_motor_all:
             eval("self.ui.motor{}Value_spinBox.setValue(self.getMotorPosition(id))".format(id))
 
     def OnButton_getLAll(self):
+        print("get_L_All")
         for id in self.int_list_id_motor_left:
             eval("self.ui.motor{}Value_spinBox.setValue(self.getMotorPosition(id))".format(id))
 
     def OnButton_getRAll(self):
+        print("get_R_All")
         for id in self.int_list_id_motor_right:
             eval("self.ui.motor{}Value_spinBox.setValue(self.getMotorPosition(id))".format(id))
 
     def OnButton_getHAll(self):
+        print("get_H_All")
         for id in self.int_list_id_motor_head:
             eval("self.ui.motor{}Value_spinBox.setValue(self.getMotorPosition(id))".format(id))
 
     def OnButton_Set(self, id):
         #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
+        print("set id=",id)
         self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]] = eval("self.ui.motor{}Value_spinBox.value()".format(id))
         self.setDeviceMoving( self.str_comport, self.str_baudrate, id, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]], 1023, 1023)
         self.int_old_motorValue[self.dic_motorIndexID['id' + str(id)]] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]]
@@ -219,6 +254,9 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         self.SetButtonAndSpinCtrlDisable()
 
         #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
+
+        for id in self.int_list_id_motor_all:
+            eval("")
         self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']] = self.ui.motor1Value_spinBox.value()
         self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']] = self.ui.motor2Value_spinBox.value()
         self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']] = self.ui.motor3Value_spinBox.value()
@@ -1222,7 +1260,7 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         #print readPacket
         str_packet = ''
         str_packet = str_packet.join([chr(c) for c in readPacket])
-        self.serialDevice.write(str_packet)
+        self.serialDevice.write(str_packet.encode())
         #print str_packet
 
     def getMotorQueryResponse( self, deviceID, Length ):
@@ -1289,7 +1327,7 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
             #print readPacket
             str_packet = ''
             str_packet = str_packet.join([chr(c) for c in Packet])
-            self.serialDevice.write(str_packet)
+            self.serialDevice.write(str_packet.encode())
 
 
     def setDeviceMoving( self,Port, Baud, deviceID, deviceType, goalPos, goalSpeed, maxTorque):
@@ -1326,7 +1364,7 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
 
             str_packet = ''
             str_packet = str_packet.join([chr(c) for c in syncWritePacket])
-            self.serialDevice.write(str_packet)
+            self.serialDevice.write(str_packet.encode())
 
             #print "Already set"
 
