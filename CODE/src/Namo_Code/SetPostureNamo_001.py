@@ -84,7 +84,8 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         self.str_fileName = postureList[0]
         self.str_fileNameNumber = postureNumber[0]
 
-        self.keyframeList = ['Keyframe' + str(i) for i in range(1,31)]
+        #self.keyframeList = ['Keyframe' + str(i) for i in range(1,31)]
+        self.keyframeList = [i for i in range(1,31)]
 
         self.ui.keyFrame_comboBox.addItems(self.keyframeList)
 
@@ -247,7 +248,7 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]] = eval("self.ui.motor{}Value_spinBox.value()".format(id))
         self.setDeviceMoving( self.str_comport, self.str_baudrate, id, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]], 1023, 1023)
         self.int_old_motorValue[self.dic_motorIndexID['id' + str(id)]] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id' + str(id)]]
-        print (eval("self.ui.motor{}Value_spinBox.value()".format(id)))
+
 
     def OnButton_play(self):
 
@@ -256,24 +257,24 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
 
         for id in self.int_list_id_motor_all:
-            eval("")
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']] = self.ui.motor1Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']] = self.ui.motor2Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']] = self.ui.motor3Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']] = self.ui.motor4Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']] = self.ui.motor5Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']] = self.ui.motor6Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']] = self.ui.motor7Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']] = self.ui.motor11Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']] = self.ui.motor12Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']] = self.ui.motor13Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']] = self.ui.motor14Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']] = self.ui.motor15Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']] = self.ui.motor16Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']] = self.ui.motor17Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']] = self.ui.motor21Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']] = self.ui.motor22Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']] = self.ui.motor23Value_spinBox.value()
+            eval("self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id{}']] = self.ui.motor{}Value_spinBox.value()".format(id))
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']] = self.ui.motor1Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']] = self.ui.motor2Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']] = self.ui.motor3Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']] = self.ui.motor4Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']] = self.ui.motor5Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']] = self.ui.motor6Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']] = self.ui.motor7Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']] = self.ui.motor11Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']] = self.ui.motor12Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']] = self.ui.motor13Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']] = self.ui.motor14Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']] = self.ui.motor15Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']] = self.ui.motor16Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']] = self.ui.motor17Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']] = self.ui.motor21Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']] = self.ui.motor22Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']] = self.ui.motor23Value_spinBox.value()
 
 
 
@@ -287,63 +288,71 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         while in_time:
             time_current = time.time()
             if time_current >= time_finish:
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']], 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']], 1023, 1023)
+                for id in self.int_list_id_motor_all:
+                    self.setDeviceMoving(self.str_comport, self.str_baudrate, id, "Ex",eval("self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id{}']]".format(id)),1023, 1023)
 
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']], 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']], 1023, 1023)
 
-                self.int_old_motorValue[self.dic_motorIndexID['id1']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']]
-                self.int_old_motorValue[self.dic_motorIndexID['id2']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']]
-                self.int_old_motorValue[self.dic_motorIndexID['id3']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']]
-                self.int_old_motorValue[self.dic_motorIndexID['id4']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']]
-                self.int_old_motorValue[self.dic_motorIndexID['id5']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']]
-                self.int_old_motorValue[self.dic_motorIndexID['id6']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']]
-                self.int_old_motorValue[self.dic_motorIndexID['id7']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']]
-                self.int_old_motorValue[self.dic_motorIndexID['id11']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']]
-                self.int_old_motorValue[self.dic_motorIndexID['id12']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']]
-                self.int_old_motorValue[self.dic_motorIndexID['id13']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']]
-                self.int_old_motorValue[self.dic_motorIndexID['id14']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']]
-                self.int_old_motorValue[self.dic_motorIndexID['id15']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']]
-                self.int_old_motorValue[self.dic_motorIndexID['id16']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']]
-                self.int_old_motorValue[self.dic_motorIndexID['id17']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']]
-                self.int_old_motorValue[self.dic_motorIndexID['id21']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']]
-                self.int_old_motorValue[self.dic_motorIndexID['id22']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']]
-                self.int_old_motorValue[self.dic_motorIndexID['id23']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']]
+                for id in self.int_list_id_motor_all:
+                    eval("self.int_old_motorValue[self.dic_motorIndexID['id{}']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id{}']]".format(id))
+
+                # self.int_old_motorValue[self.dic_motorIndexID['id1']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id2']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id3']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id4']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id5']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id6']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id7']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id11']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id12']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id13']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id14']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id15']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id16']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id17']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id21']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id22']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']]
+                # self.int_old_motorValue[self.dic_motorIndexID['id23']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']]
 
                 in_time = False
 
             else:
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']],self.int_old_motorValue[self.dic_motorIndexID['id1']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']],self.int_old_motorValue[self.dic_motorIndexID['id2']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']],self.int_old_motorValue[self.dic_motorIndexID['id3']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']],self.int_old_motorValue[self.dic_motorIndexID['id4']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']],self.int_old_motorValue[self.dic_motorIndexID['id5']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']],self.int_old_motorValue[self.dic_motorIndexID['id6']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']],self.int_old_motorValue[self.dic_motorIndexID['id7']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']],self.int_old_motorValue[self.dic_motorIndexID['id11']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']],self.int_old_motorValue[self.dic_motorIndexID['id12']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']],self.int_old_motorValue[self.dic_motorIndexID['id13']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']],self.int_old_motorValue[self.dic_motorIndexID['id14']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']],self.int_old_motorValue[self.dic_motorIndexID['id15']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']],self.int_old_motorValue[self.dic_motorIndexID['id16']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']],self.int_old_motorValue[self.dic_motorIndexID['id17']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']],self.int_old_motorValue[self.dic_motorIndexID['id21']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']],self.int_old_motorValue[self.dic_motorIndexID['id22']],time_finish,time_start,time_current), 1023, 1023)
-                self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']],self.int_old_motorValue[self.dic_motorIndexID['id23']],time_finish,time_start,time_current), 1023, 1023)
+                for id in self.int_list_id_motor_all:
+                    self.setDeviceMoving(self.str_comport, self.str_baudrate, id, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))],self.int_old_motorValue[eval("self.dic_motorIndexID['id{}']".format(id))], time_finish, time_start, time_current),1023, 1023)
+
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']],self.int_old_motorValue[self.dic_motorIndexID['id1']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']],self.int_old_motorValue[self.dic_motorIndexID['id2']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']],self.int_old_motorValue[self.dic_motorIndexID['id3']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']],self.int_old_motorValue[self.dic_motorIndexID['id4']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']],self.int_old_motorValue[self.dic_motorIndexID['id5']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']],self.int_old_motorValue[self.dic_motorIndexID['id6']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']],self.int_old_motorValue[self.dic_motorIndexID['id7']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']],self.int_old_motorValue[self.dic_motorIndexID['id11']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']],self.int_old_motorValue[self.dic_motorIndexID['id12']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']],self.int_old_motorValue[self.dic_motorIndexID['id13']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']],self.int_old_motorValue[self.dic_motorIndexID['id14']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']],self.int_old_motorValue[self.dic_motorIndexID['id15']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']],self.int_old_motorValue[self.dic_motorIndexID['id16']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']],self.int_old_motorValue[self.dic_motorIndexID['id17']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']],self.int_old_motorValue[self.dic_motorIndexID['id21']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']],self.int_old_motorValue[self.dic_motorIndexID['id22']],time_finish,time_start,time_current), 1023, 1023)
+                # self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.InterpolateMotorValue(self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']],self.int_old_motorValue[self.dic_motorIndexID['id23']],time_finish,time_start,time_current), 1023, 1023)
 
             time.sleep(0.015)
 
@@ -355,30 +364,34 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
 
     def OnButton_setLAll(self):
 
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']] = self.ui.motor1Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']] = self.ui.motor2Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']] = self.ui.motor3Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']] = self.ui.motor4Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']] = self.ui.motor5Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']] = self.ui.motor6Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']] = self.ui.motor7Value_spinBox.value()
+        for id in self.int_list_id_motor_left:
+            self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))] = self.ui.motor1Value_spinBox.value()
+            self.setDeviceMoving(self.str_comport, self.str_baudrate, id, "Ex",self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))], 1023, 1023)
+            self.int_old_motorValue[eval("self.dic_motorIndexID['id{}']".format(id))] = self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))]
 
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']], 1023, 1023)
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']] = self.ui.motor1Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']] = self.ui.motor2Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']] = self.ui.motor3Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']] = self.ui.motor4Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']] = self.ui.motor5Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']] = self.ui.motor6Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']] = self.ui.motor7Value_spinBox.value()
 
-        self.int_old_motorValue[self.dic_motorIndexID['id1']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']]
-        self.int_old_motorValue[self.dic_motorIndexID['id2']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']]
-        self.int_old_motorValue[self.dic_motorIndexID['id3']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']]
-        self.int_old_motorValue[self.dic_motorIndexID['id4']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']]
-        self.int_old_motorValue[self.dic_motorIndexID['id5']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']]
-        self.int_old_motorValue[self.dic_motorIndexID['id6']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']]
-        self.int_old_motorValue[self.dic_motorIndexID['id7']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']]
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']], 1023, 1023)
+
+        # self.int_old_motorValue[self.dic_motorIndexID['id1']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id2']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id3']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id4']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id5']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id6']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id7']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']]
 
 
 
@@ -386,110 +399,126 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
 
 
     def OnButton_setRAll(self):
+        for id in self.int_list_id_motor_right:
+            self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))] = self.ui.motor1Value_spinBox.value()
+            self.setDeviceMoving(self.str_comport, self.str_baudrate, id, "Ex",self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))], 1023, 1023)
+            self.int_old_motorValue[eval("self.dic_motorIndexID['id{}']".format(id))] = self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))]
 
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']] = self.ui.motor11Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']] = self.ui.motor12Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']] = self.ui.motor13Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']] = self.ui.motor14Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']] = self.ui.motor15Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']] = self.ui.motor16Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']] = self.ui.motor17Value_spinBox.value()
 
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']], 1023, 1023)
-
-        self.int_old_motorValue[self.dic_motorIndexID['id11']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']]
-        self.int_old_motorValue[self.dic_motorIndexID['id12']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']]
-        self.int_old_motorValue[self.dic_motorIndexID['id13']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']]
-        self.int_old_motorValue[self.dic_motorIndexID['id14']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']]
-        self.int_old_motorValue[self.dic_motorIndexID['id15']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']]
-        self.int_old_motorValue[self.dic_motorIndexID['id16']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']]
-        self.int_old_motorValue[self.dic_motorIndexID['id17']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']]
+        # #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']] = self.ui.motor11Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']] = self.ui.motor12Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']] = self.ui.motor13Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']] = self.ui.motor14Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']] = self.ui.motor15Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']] = self.ui.motor16Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']] = self.ui.motor17Value_spinBox.value()
+        #
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']], 1023, 1023)
+        #
+        # self.int_old_motorValue[self.dic_motorIndexID['id11']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id12']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id13']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id14']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id15']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id16']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id17']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']]
 
 
 
     def OnButton_setHAll(self):
 
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']] = self.ui.motor21Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']] = self.ui.motor22Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']] = self.ui.motor23Value_spinBox.value()
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']], 1023, 1023)
+        for id in self.int_list_id_motor_head:
+            self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))] = self.ui.motor1Value_spinBox.value()
+            self.setDeviceMoving(self.str_comport, self.str_baudrate, id, "Ex",self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))], 1023, 1023)
+            self.int_old_motorValue[eval("self.dic_motorIndexID['id{}']".format(id))] = self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))]
 
-        self.int_old_motorValue[self.dic_motorIndexID['id21']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']]
-        self.int_old_motorValue[self.dic_motorIndexID['id22']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']]
-        self.int_old_motorValue[self.dic_motorIndexID['id23']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']]
+
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']] = self.ui.motor21Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']] = self.ui.motor22Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']] = self.ui.motor23Value_spinBox.value()
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']], 1023, 1023)
+        #
+        # self.int_old_motorValue[self.dic_motorIndexID['id21']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id22']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id23']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']]
 
 
 
     def OnButton_setAll(self):
-
-        #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']] = self.ui.motor1Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']] = self.ui.motor2Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']] = self.ui.motor3Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']] = self.ui.motor4Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']] = self.ui.motor5Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']] = self.ui.motor6Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']] = self.ui.motor7Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']] = self.ui.motor11Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']] = self.ui.motor12Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']] = self.ui.motor13Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']] = self.ui.motor14Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']] = self.ui.motor15Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']] = self.ui.motor16Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']] = self.ui.motor17Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']] = self.ui.motor21Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']] = self.ui.motor22Value_spinBox.value()
-        self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']] = self.ui.motor23Value_spinBox.value()
+        for id in self.int_list_id_motor_all:
+            self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))] = self.ui.motor1Value_spinBox.value()
+            self.setDeviceMoving(self.str_comport, self.str_baudrate, id, "Ex",self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))], 1023, 1023)
+            self.int_old_motorValue[eval("self.dic_motorIndexID['id{}']".format(id))] = self.int_motorValue[self.GetOrderKeyframe() - 1][eval("self.dic_motorIndexID['id{}']".format(id))]
 
 
-
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']], 1023, 1023)
-        self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']], 1023, 1023)
-
-
-        self.int_old_motorValue[self.dic_motorIndexID['id11']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']]
-        self.int_old_motorValue[self.dic_motorIndexID['id12']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']]
-        self.int_old_motorValue[self.dic_motorIndexID['id13']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']]
-        self.int_old_motorValue[self.dic_motorIndexID['id14']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']]
-        self.int_old_motorValue[self.dic_motorIndexID['id15']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']]
-        self.int_old_motorValue[self.dic_motorIndexID['id16']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']]
-        self.int_old_motorValue[self.dic_motorIndexID['id17']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']]
-
-        self.int_old_motorValue[self.dic_motorIndexID['id1']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']]
-        self.int_old_motorValue[self.dic_motorIndexID['id2']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']]
-        self.int_old_motorValue[self.dic_motorIndexID['id3']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']]
-        self.int_old_motorValue[self.dic_motorIndexID['id4']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']]
-        self.int_old_motorValue[self.dic_motorIndexID['id5']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']]
-        self.int_old_motorValue[self.dic_motorIndexID['id6']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']]
-        self.int_old_motorValue[self.dic_motorIndexID['id7']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']]
-
-        self.int_old_motorValue[self.dic_motorIndexID['id21']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']]
-        self.int_old_motorValue[self.dic_motorIndexID['id22']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']]
-        self.int_old_motorValue[self.dic_motorIndexID['id23']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']]
+        # #self.int_time[self.GetOrderKeyframe() - 1] = self.spinctrl_time.GetValue()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']] = self.ui.motor1Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']] = self.ui.motor2Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']] = self.ui.motor3Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']] = self.ui.motor4Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']] = self.ui.motor5Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']] = self.ui.motor6Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']] = self.ui.motor7Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']] = self.ui.motor11Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']] = self.ui.motor12Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']] = self.ui.motor13Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']] = self.ui.motor14Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']] = self.ui.motor15Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']] = self.ui.motor16Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']] = self.ui.motor17Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']] = self.ui.motor21Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']] = self.ui.motor22Value_spinBox.value()
+        # self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']] = self.ui.motor23Value_spinBox.value()
+        #
+        #
+        #
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']], 1023, 1023)
+        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']], 1023, 1023)
+        #
+        #
+        # self.int_old_motorValue[self.dic_motorIndexID['id11']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id11']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id12']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id12']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id13']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id13']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id14']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id14']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id15']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id15']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id16']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id16']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id17']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id17']]
+        #
+        # self.int_old_motorValue[self.dic_motorIndexID['id1']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id1']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id2']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id2']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id3']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id3']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id4']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id4']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id5']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id5']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id6']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id6']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id7']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id7']]
+        #
+        # self.int_old_motorValue[self.dic_motorIndexID['id21']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id21']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id22']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id22']]
+        # self.int_old_motorValue[self.dic_motorIndexID['id23']] = self.int_motorValue[self.GetOrderKeyframe() - 1][self.dic_motorIndexID['id23']]
 
 
 
@@ -512,63 +541,71 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
             while in_time:
                 time_current = time.time()
                 if time_current >= time_finish:
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id1']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id2']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id3']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id4']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id5']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id6']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id7']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id11']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id12']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id13']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id14']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id15']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id16']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id17']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id21']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id22']], 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id23']], 200, 200)
 
-                    self.int_old_motorValue[self.dic_motorIndexID['id1']] = self.int_motorValue[0][self.dic_motorIndexID['id1']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id2']] = self.int_motorValue[0][self.dic_motorIndexID['id2']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id3']] = self.int_motorValue[0][self.dic_motorIndexID['id3']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id4']] = self.int_motorValue[0][self.dic_motorIndexID['id4']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id5']] = self.int_motorValue[0][self.dic_motorIndexID['id5']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id6']] = self.int_motorValue[0][self.dic_motorIndexID['id6']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id7']] = self.int_motorValue[0][self.dic_motorIndexID['id7']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id11']] = self.int_motorValue[0][self.dic_motorIndexID['id11']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id12']] = self.int_motorValue[0][self.dic_motorIndexID['id12']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id13']] = self.int_motorValue[0][self.dic_motorIndexID['id13']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id14']] = self.int_motorValue[0][self.dic_motorIndexID['id14']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id15']] = self.int_motorValue[0][self.dic_motorIndexID['id15']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id16']] = self.int_motorValue[0][self.dic_motorIndexID['id16']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id17']] = self.int_motorValue[0][self.dic_motorIndexID['id17']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id21']] = self.int_motorValue[0][self.dic_motorIndexID['id21']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id22']] = self.int_motorValue[0][self.dic_motorIndexID['id22']]
-                    self.int_old_motorValue[self.dic_motorIndexID['id23']] = self.int_motorValue[0][self.dic_motorIndexID['id23']]
+                    for id in self.int_list_id_motor_all:
+                        self.setDeviceMoving(self.str_comport, self.str_baudrate, id, "Ex",self.int_motorValue[0][eval("self.dic_motorIndexID['id{}']".format(id))], 200, 200)
+                        self.int_old_motorValue[eval("self.dic_motorIndexID['id{}']".format(id))] = self.int_motorValue[0][eval("self.dic_motorIndexID['id{}']".format(id))]
+
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id1']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id2']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id3']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id4']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id5']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id6']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id7']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id11']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id12']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id13']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id14']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id15']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id16']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id17']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id21']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id22']], 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.int_motorValue[0][self.dic_motorIndexID['id23']], 200, 200)
+                    #
+                    # self.int_old_motorValue[self.dic_motorIndexID['id1']] = self.int_motorValue[0][self.dic_motorIndexID['id1']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id2']] = self.int_motorValue[0][self.dic_motorIndexID['id2']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id3']] = self.int_motorValue[0][self.dic_motorIndexID['id3']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id4']] = self.int_motorValue[0][self.dic_motorIndexID['id4']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id5']] = self.int_motorValue[0][self.dic_motorIndexID['id5']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id6']] = self.int_motorValue[0][self.dic_motorIndexID['id6']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id7']] = self.int_motorValue[0][self.dic_motorIndexID['id7']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id11']] = self.int_motorValue[0][self.dic_motorIndexID['id11']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id12']] = self.int_motorValue[0][self.dic_motorIndexID['id12']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id13']] = self.int_motorValue[0][self.dic_motorIndexID['id13']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id14']] = self.int_motorValue[0][self.dic_motorIndexID['id14']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id15']] = self.int_motorValue[0][self.dic_motorIndexID['id15']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id16']] = self.int_motorValue[0][self.dic_motorIndexID['id16']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id17']] = self.int_motorValue[0][self.dic_motorIndexID['id17']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id21']] = self.int_motorValue[0][self.dic_motorIndexID['id21']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id22']] = self.int_motorValue[0][self.dic_motorIndexID['id22']]
+                    # self.int_old_motorValue[self.dic_motorIndexID['id23']] = self.int_motorValue[0][self.dic_motorIndexID['id23']]
 
 
                     in_time = False
 
                 else:
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id1']],self.int_old_motorValue[self.dic_motorIndexID['id1']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id2']],self.int_old_motorValue[self.dic_motorIndexID['id2']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id3']],self.int_old_motorValue[self.dic_motorIndexID['id3']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id4']],self.int_old_motorValue[self.dic_motorIndexID['id4']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id5']],self.int_old_motorValue[self.dic_motorIndexID['id5']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id6']],self.int_old_motorValue[self.dic_motorIndexID['id6']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id7']],self.int_old_motorValue[self.dic_motorIndexID['id7']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id11']],self.int_old_motorValue[self.dic_motorIndexID['id11']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id12']],self.int_old_motorValue[self.dic_motorIndexID['id12']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id13']],self.int_old_motorValue[self.dic_motorIndexID['id13']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id14']],self.int_old_motorValue[self.dic_motorIndexID['id14']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id15']],self.int_old_motorValue[self.dic_motorIndexID['id15']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id16']],self.int_old_motorValue[self.dic_motorIndexID['id16']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id17']],self.int_old_motorValue[self.dic_motorIndexID['id17']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id21']],self.int_old_motorValue[self.dic_motorIndexID['id21']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id22']],self.int_old_motorValue[self.dic_motorIndexID['id22']],time_finish,time_start,time_current), 200, 200)
-                    self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id23']],self.int_old_motorValue[self.dic_motorIndexID['id23']],time_finish,time_start,time_current), 200, 200)
+                    for id in self.int_list_id_motor_all:
+                        self.setDeviceMoving(self.str_comport, self.str_baudrate, id, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][eval("self.dic_motorIndexID['id{}']".format(id))],self.int_old_motorValue[eval("self.dic_motorIndexID['id{}']".format(id))], time_finish, time_start,time_current), 200, 200)
+
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id1']],self.int_old_motorValue[self.dic_motorIndexID['id1']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id2']],self.int_old_motorValue[self.dic_motorIndexID['id2']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id3']],self.int_old_motorValue[self.dic_motorIndexID['id3']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id4']],self.int_old_motorValue[self.dic_motorIndexID['id4']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id5']],self.int_old_motorValue[self.dic_motorIndexID['id5']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id6']],self.int_old_motorValue[self.dic_motorIndexID['id6']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id7']],self.int_old_motorValue[self.dic_motorIndexID['id7']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id11']],self.int_old_motorValue[self.dic_motorIndexID['id11']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id12']],self.int_old_motorValue[self.dic_motorIndexID['id12']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id13']],self.int_old_motorValue[self.dic_motorIndexID['id13']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id14']],self.int_old_motorValue[self.dic_motorIndexID['id14']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id15']],self.int_old_motorValue[self.dic_motorIndexID['id15']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id16']],self.int_old_motorValue[self.dic_motorIndexID['id16']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id17']],self.int_old_motorValue[self.dic_motorIndexID['id17']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id21']],self.int_old_motorValue[self.dic_motorIndexID['id21']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id22']],self.int_old_motorValue[self.dic_motorIndexID['id22']],time_finish,time_start,time_current), 200, 200)
+                    # self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.InterpolateMotorValue(self.int_motorValue[0][self.dic_motorIndexID['id23']],self.int_old_motorValue[self.dic_motorIndexID['id23']],time_finish,time_start,time_current), 200, 200)
 
                 time.sleep(0.015)
             print('Finished')
@@ -592,64 +629,71 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
                 while in_time:
                     time_current = time.time()
                     if time_current >= time_finish:
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id1']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id2']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id3']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id4']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id5']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id6']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id7']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id11']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id12']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id13']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id14']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id15']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id16']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id17']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id21']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id22']], 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id23']], 1023, 1023)
+                        for id in self.int_list_id_motor_all:
+                            self.setDeviceMoving(self.str_comport, self.str_baudrate, id, "Ex",self.int_motorValue[x][eval("self.dic_motorIndexID['id{}']".format(id))], 1023, 1023)
+                            self.int_old_motorValue[eval("self.dic_motorIndexID['id{}']".format(id))] = self.int_motorValue[x][eval("self.dic_motorIndexID['id{}']".format())]
 
-
-                        self.int_old_motorValue[self.dic_motorIndexID['id1']] = self.int_motorValue[x][self.dic_motorIndexID['id1']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id2']] = self.int_motorValue[x][self.dic_motorIndexID['id2']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id3']] = self.int_motorValue[x][self.dic_motorIndexID['id3']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id4']] = self.int_motorValue[x][self.dic_motorIndexID['id4']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id5']] = self.int_motorValue[x][self.dic_motorIndexID['id5']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id6']] = self.int_motorValue[x][self.dic_motorIndexID['id6']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id7']] = self.int_motorValue[x][self.dic_motorIndexID['id7']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id11']] = self.int_motorValue[x][self.dic_motorIndexID['id11']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id12']] = self.int_motorValue[x][self.dic_motorIndexID['id12']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id13']] = self.int_motorValue[x][self.dic_motorIndexID['id13']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id14']] = self.int_motorValue[x][self.dic_motorIndexID['id14']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id15']] = self.int_motorValue[x][self.dic_motorIndexID['id15']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id16']] = self.int_motorValue[x][self.dic_motorIndexID['id16']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id17']] = self.int_motorValue[x][self.dic_motorIndexID['id17']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id21']] = self.int_motorValue[x][self.dic_motorIndexID['id21']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id22']] = self.int_motorValue[x][self.dic_motorIndexID['id22']]
-                        self.int_old_motorValue[self.dic_motorIndexID['id23']] = self.int_motorValue[x][self.dic_motorIndexID['id23']]
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id1']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id2']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id3']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id4']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id5']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id6']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id7']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id11']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id12']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id13']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id14']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id15']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id16']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id17']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id21']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id22']], 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.int_motorValue[x][self.dic_motorIndexID['id23']], 1023, 1023)
+                        #
+                        #
+                        # self.int_old_motorValue[self.dic_motorIndexID['id1']] = self.int_motorValue[x][self.dic_motorIndexID['id1']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id2']] = self.int_motorValue[x][self.dic_motorIndexID['id2']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id3']] = self.int_motorValue[x][self.dic_motorIndexID['id3']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id4']] = self.int_motorValue[x][self.dic_motorIndexID['id4']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id5']] = self.int_motorValue[x][self.dic_motorIndexID['id5']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id6']] = self.int_motorValue[x][self.dic_motorIndexID['id6']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id7']] = self.int_motorValue[x][self.dic_motorIndexID['id7']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id11']] = self.int_motorValue[x][self.dic_motorIndexID['id11']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id12']] = self.int_motorValue[x][self.dic_motorIndexID['id12']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id13']] = self.int_motorValue[x][self.dic_motorIndexID['id13']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id14']] = self.int_motorValue[x][self.dic_motorIndexID['id14']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id15']] = self.int_motorValue[x][self.dic_motorIndexID['id15']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id16']] = self.int_motorValue[x][self.dic_motorIndexID['id16']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id17']] = self.int_motorValue[x][self.dic_motorIndexID['id17']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id21']] = self.int_motorValue[x][self.dic_motorIndexID['id21']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id22']] = self.int_motorValue[x][self.dic_motorIndexID['id22']]
+                        # self.int_old_motorValue[self.dic_motorIndexID['id23']] = self.int_motorValue[x][self.dic_motorIndexID['id23']]
 
 
                         in_time = False
 
                     else:
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id1']],self.int_old_motorValue[self.dic_motorIndexID['id1']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id2']],self.int_old_motorValue[self.dic_motorIndexID['id2']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id3']],self.int_old_motorValue[self.dic_motorIndexID['id3']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id4']],self.int_old_motorValue[self.dic_motorIndexID['id4']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id5']],self.int_old_motorValue[self.dic_motorIndexID['id5']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id6']],self.int_old_motorValue[self.dic_motorIndexID['id6']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id7']],self.int_old_motorValue[self.dic_motorIndexID['id7']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id11']],self.int_old_motorValue[self.dic_motorIndexID['id11']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id12']],self.int_old_motorValue[self.dic_motorIndexID['id12']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id13']],self.int_old_motorValue[self.dic_motorIndexID['id13']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id14']],self.int_old_motorValue[self.dic_motorIndexID['id14']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id15']],self.int_old_motorValue[self.dic_motorIndexID['id15']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id16']],self.int_old_motorValue[self.dic_motorIndexID['id16']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id17']],self.int_old_motorValue[self.dic_motorIndexID['id17']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id21']],self.int_old_motorValue[self.dic_motorIndexID['id21']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id22']],self.int_old_motorValue[self.dic_motorIndexID['id22']],time_finish,time_start,time_current), 1023, 1023)
-                        self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id23']],self.int_old_motorValue[self.dic_motorIndexID['id23']],time_finish,time_start,time_current), 1023, 1023)
+                        for id in self.int_list_id_motor_all:
+                            self.setDeviceMoving(self.str_comport, self.str_baudrate, id, "Ex",self.InterpolateMotorValue(self.int_motorValue[x][eval("self.dic_motorIndexID['id{}']".format(id))],self.int_old_motorValue[eval("self.dic_motorIndexID['id1']".format(id))], time_finish,time_start, time_current), 1023, 1023)
+
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 1, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id1']],self.int_old_motorValue[self.dic_motorIndexID['id1']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 2, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id2']],self.int_old_motorValue[self.dic_motorIndexID['id2']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 3, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id3']],self.int_old_motorValue[self.dic_motorIndexID['id3']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 4, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id4']],self.int_old_motorValue[self.dic_motorIndexID['id4']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 5, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id5']],self.int_old_motorValue[self.dic_motorIndexID['id5']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 6, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id6']],self.int_old_motorValue[self.dic_motorIndexID['id6']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 7, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id7']],self.int_old_motorValue[self.dic_motorIndexID['id7']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 11, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id11']],self.int_old_motorValue[self.dic_motorIndexID['id11']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 12, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id12']],self.int_old_motorValue[self.dic_motorIndexID['id12']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 13, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id13']],self.int_old_motorValue[self.dic_motorIndexID['id13']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 14, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id14']],self.int_old_motorValue[self.dic_motorIndexID['id14']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 15, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id15']],self.int_old_motorValue[self.dic_motorIndexID['id15']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 16, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id16']],self.int_old_motorValue[self.dic_motorIndexID['id16']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 17, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id17']],self.int_old_motorValue[self.dic_motorIndexID['id17']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 21, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id21']],self.int_old_motorValue[self.dic_motorIndexID['id21']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 22, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id22']],self.int_old_motorValue[self.dic_motorIndexID['id22']],time_finish,time_start,time_current), 1023, 1023)
+                        # self.setDeviceMoving( self.str_comport, self.str_baudrate, 23, "Ex", self.InterpolateMotorValue(self.int_motorValue[x][self.dic_motorIndexID['id23']],self.int_old_motorValue[self.dic_motorIndexID['id23']],time_finish,time_start,time_current), 1023, 1023)
 
                     time.sleep(0.015)
 
@@ -711,25 +755,27 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
 
     def OnButton_SaveCenter(self):
         file_center = open('./Postures/motor_center.txt', 'w')
-        self.int_motorCenterValue[self.dic_motorIndexID['id1']] = self.ui.motor1Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id2']] = self.ui.motor2Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id3']] = self.ui.motor3Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id4']] = self.ui.motor4Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id5']] = self.ui.motor5Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id6']] = self.ui.motor6Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id7']] = self.ui.motor7Value_spinBox.value()
-
-        self.int_motorCenterValue[self.dic_motorIndexID['id11']] = self.ui.motor11Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id12']] = self.ui.motor12Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id13']] = self.ui.motor13Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id14']] = self.ui.motor14Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id15']] = self.ui.motor15Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id16']] = self.ui.motor16Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id17']] = self.ui.motor17Value_spinBox.value()
-
-        self.int_motorCenterValue[self.dic_motorIndexID['id21']] = self.ui.motor21Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id22']] = self.ui.motor22Value_spinBox.value()
-        self.int_motorCenterValue[self.dic_motorIndexID['id23']] = self.ui.motor23Value_spinBox.value()
+        for id in self.int_list_id_motor_all:
+            self.int_motorCenterValue[eval("self.dic_motorIndexID['id{}']".format(id))] = self.ui.motor1Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id1']] = self.ui.motor1Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id2']] = self.ui.motor2Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id3']] = self.ui.motor3Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id4']] = self.ui.motor4Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id5']] = self.ui.motor5Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id6']] = self.ui.motor6Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id7']] = self.ui.motor7Value_spinBox.value()
+        #
+        # self.int_motorCenterValue[self.dic_motorIndexID['id11']] = self.ui.motor11Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id12']] = self.ui.motor12Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id13']] = self.ui.motor13Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id14']] = self.ui.motor14Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id15']] = self.ui.motor15Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id16']] = self.ui.motor16Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id17']] = self.ui.motor17Value_spinBox.value()
+        #
+        # self.int_motorCenterValue[self.dic_motorIndexID['id21']] = self.ui.motor21Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id22']] = self.ui.motor22Value_spinBox.value()
+        # self.int_motorCenterValue[self.dic_motorIndexID['id23']] = self.ui.motor23Value_spinBox.value()
 
         for y in range (17):
                 file_center.write(str(self.int_motorCenterValue[y])+'\n')
@@ -778,66 +824,68 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
 
     # work 50%
     def SetValueKeyframeToShow(self):
-        if self.str_keyframeSelected == 'Keyframe1':
-            keyframe = 1
-        elif self.str_keyframeSelected == 'Keyframe2':
-            keyframe = 2
-        elif self.str_keyframeSelected == 'Keyframe3':
-            keyframe = 3
-        elif self.str_keyframeSelected == 'Keyframe4':
-            keyframe = 4
-        elif self.str_keyframeSelected == 'Keyframe5':
-            keyframe = 5
-        elif self.str_keyframeSelected == 'Keyframe6':
-            keyframe = 6
-        elif self.str_keyframeSelected == 'Keyframe7':
-            keyframe = 7
-        elif self.str_keyframeSelected == 'Keyframe8':
-            keyframe = 8
-        elif self.str_keyframeSelected == 'Keyframe9':
-            keyframe = 9
-        elif self.str_keyframeSelected == 'Keyframe10':
-            keyframe = 10
-        elif self.str_keyframeSelected == 'Keyframe11':
-            keyframe = 11
-        elif self.str_keyframeSelected == 'Keyframe12':
-            keyframe = 12
-        elif self.str_keyframeSelected == 'Keyframe13':
-            keyframe = 13
-        elif self.str_keyframeSelected == 'Keyframe14':
-            keyframe = 14
-        elif self.str_keyframeSelected == 'Keyframe15':
-            keyframe = 15
-        elif self.str_keyframeSelected == 'Keyframe16':
-            keyframe = 16
-        elif self.str_keyframeSelected == 'Keyframe17':
-            keyframe = 17
-        elif self.str_keyframeSelected == 'Keyframe18':
-            keyframe = 18
-        elif self.str_keyframeSelected == 'Keyframe19':
-            keyframe = 19
-        elif self.str_keyframeSelected == 'Keyframe20':
-            keyframe = 20
-        elif self.str_keyframeSelected == 'Keyframe21':
-            keyframe = 21
-        elif self.str_keyframeSelected == 'Keyframe22':
-            keyframe = 22
-        elif self.str_keyframeSelected == 'Keyframe23':
-            keyframe = 23
-        elif self.str_keyframeSelected == 'Keyframe24':
-            keyframe = 24
-        elif self.str_keyframeSelected == 'Keyframe25':
-            keyframe = 25
-        elif self.str_keyframeSelected == 'Keyframe26':
-            keyframe = 26
-        elif self.str_keyframeSelected == 'Keyframe27':
-            keyframe = 27
-        elif self.str_keyframeSelected == 'Keyframe28':
-            keyframe = 28
-        elif self.str_keyframeSelected == 'Keyframe29':
-            keyframe = 29
-        elif self.str_keyframeSelected == 'Keyframe30':
-            keyframe = 30
+        keyframe = self.str_keyframeSelected
+        # if self.str_keyframeSelected == 'Keyframe1':
+        #     keyframe = 1
+        # elif self.str_keyframeSelected == 'Keyframe2':
+        #     keyframe = 2
+        # elif self.str_keyframeSelected == 'Keyframe3':
+        #     keyframe = 3
+        # elif self.str_keyframeSelected == 'Keyframe4':
+        #     keyframe = 4
+        # elif self.str_keyframeSelected == 'Keyframe5':
+        #     keyframe = 5
+        # elif self.str_keyframeSelected == 'Keyframe6':
+        #     keyframe = 6
+        # elif self.str_keyframeSelected == 'Keyframe7':
+        #     keyframe = 7
+        # elif self.str_keyframeSelected == 'Keyframe8':
+        #     keyframe = 8
+        # elif self.str_keyframeSelected == 'Keyframe9':
+        #     keyframe = 9
+        # elif self.str_keyframeSelected == 'Keyframe10':
+        #     keyframe = 10
+        # elif self.str_keyframeSelected == 'Keyframe11':
+        #     keyframe = 11
+        # elif self.str_keyframeSelected == 'Keyframe12':
+        #     keyframe = 12
+        # elif self.str_keyframeSelected == 'Keyframe13':
+        #     keyframe = 13
+        # elif self.str_keyframeSelected == 'Keyframe14':
+        #     keyframe = 14
+        # elif self.str_keyframeSelected == 'Keyframe15':
+        #     keyframe = 15
+        # elif self.str_keyframeSelected == 'Keyframe16':
+        #     keyframe = 16
+        # elif self.str_keyframeSelected == 'Keyframe17':
+        #     keyframe = 17
+        # elif self.str_keyframeSelected == 'Keyframe18':
+        #     keyframe = 18
+        # elif self.str_keyframeSelected == 'Keyframe19':
+        #     keyframe = 19
+        # elif self.str_keyframeSelected == 'Keyframe20':
+        #     keyframe = 20
+        # elif self.str_keyframeSelected == 'Keyframe21':
+        #     keyframe = 21
+        # elif self.str_keyframeSelected == 'Keyframe22':
+        #     keyframe = 22
+        # elif self.str_keyframeSelected == 'Keyframe23':
+        #     keyframe = 23
+        # elif self.str_keyframeSelected == 'Keyframe24':
+        #     keyframe = 24
+        # elif self.str_keyframeSelected == 'Keyframe25':
+        #     keyframe = 25
+        # elif self.str_keyframeSelected == 'Keyframe26':
+        #     keyframe = 26
+        # elif self.str_keyframeSelected == 'Keyframe27':
+        #     keyframe = 27
+        # elif self.str_keyframeSelected == 'Keyframe28':
+        #     keyframe = 28
+        # elif self.str_keyframeSelected == 'Keyframe29':
+        #     keyframe = 29
+        # elif self.str_keyframeSelected == 'Keyframe30':
+        #     keyframe = 30
+
 
         self.int_keyframeSelected = keyframe
 
