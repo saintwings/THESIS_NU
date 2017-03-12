@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import (QMainWindow, QTextEdit,
     QAction, QFileDialog, QApplication)
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon ##
 from SetPostureNamoUI_QT5 import Ui_Form
 import time
 import serial

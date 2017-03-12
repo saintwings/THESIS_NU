@@ -1,0 +1,7 @@
+Posture_Name = /home/saintwings/PycharmProjects/THESIS_NU/CODE/src/Namo_Code/Postures/Salute_palm_2.in3
+Keyframe_Amount = 3
+Keyframe_Time = 20, 20, 10
+[Keyframe_Value]
+Keyframe_0 = 250, 3309, 2303, 1801, 2379, 2320, 1725, 3915, 776, 2461, 2292, 2359, 1953, 1886, 598, 533, 372
+Keyframe_1 = 250, 3309, 2303, 1801, 2379, 2320, 1725, 1996, 1245, 2391, 1451, 2446, 1740, 1791, 598, 533, 372
+Keyframe_2 = 250, 3309, 2303, 1801, 2379, 2320, 1725, 1152, 1243, 2009, 1069, 2746, 1842, 1800, 598, 533, 372
