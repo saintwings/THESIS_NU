@@ -32,6 +32,8 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         self.int_keyframe = 0
         self.int_motorID = 0
         self.bool_activeKeyframe =[False for x in range (30)]
+        self.str_keyframe_gesture_type = []
+
 
         ## load center ##
         file_center = open('./Postures/motor_center.txt', 'r')
@@ -136,6 +138,27 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
 
         self.ui.saveFile_pushButton.clicked.connect(self.OnButton_saveFile)
         self.ui.loadFile_pushButton.clicked.connect(self.OnButton_loadFile)
+
+        self.ui.ready_gesture_radioButton.clicked.connect(self.Check_keyframe_gesture_type)
+        self.ui.pre_gesture_radioButton.clicked.connect(self.Check_keyframe_gesture_type)
+        self.ui.main_gesture_radioButton.clicked.connect(self.Check_keyframe_gesture_type)
+        self.ui.pos_gesture_radioButton.clicked.connect(self.Check_keyframe_gesture_type)
+
+        # self.ui.gesture_type_groupBox.toggled.connect(self.Check_keyframe_gesture_type)
+
+    def Check_keyframe_gesture_type(self):
+        if self.ui.ready_gesture_radioButton.isChecked() == True:
+            print("ready geature")
+        if self.ui.pre_gesture_radioButton.isChecked() == True:
+            print("pre geature")
+        if self.ui.main_gesture_radioButton.isChecked() == True:
+            print("main geature")
+        if self.ui.pos_gesture_radioButton.isChecked() == True:
+            print("pos geature")
+
+
+    def Set_keyframe_gesture_type(self):
+        pass
 
 
     def OnButton_saveFile(self):
