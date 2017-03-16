@@ -19,6 +19,7 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         self.InitVariable()
         self.InitUI()
         self.SetButtonAndSpinCtrlDisable()
+        self.Set_keyframe_gesture_type_checkable(False)
 
     ## work ##
     def InitVariable(self):
@@ -147,23 +148,41 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         # self.ui.gesture_type_groupBox.toggled.connect(self.Check_keyframe_gesture_type)
 
     def Check_keyframe_gesture_type(self):
+        print("Current keyframe = ",self.int_keyframeSelected)
+        print(self.str_keyframe_gesture_type)
         if self.ui.ready_gesture_radioButton.isChecked() == True:
+            self.str_keyframe_gesture_type[self.int_keyframeSelected-1] = 'ready'
             print("ready geature")
         if self.ui.pre_gesture_radioButton.isChecked() == True:
+            self.str_keyframe_gesture_type[self.int_keyframeSelected - 1] = 'pre'
             print("pre geature")
         if self.ui.main_gesture_radioButton.isChecked() == True:
+            self.str_keyframe_gesture_type[self.int_keyframeSelected - 1] = 'main'
             print("main geature")
         if self.ui.pos_gesture_radioButton.isChecked() == True:
+            self.str_keyframe_gesture_type[self.int_keyframeSelected - 1] = 'pos'
             print("pos geature")
 
+        print(self.str_keyframe_gesture_type)
 
-    def Set_keyframe_gesture_type(self):
-        pass
+    def Set_keyframe_gesture_type(self,type):
+        if type == 'ready' :
+            self.ui.ready_gesture_radioButton.setChecked(True)
+        elif type == 'pre' :
+            self.ui.pre_gesture_radioButton.setChecked(True)
+        elif type == 'main' :
+            self.ui.main_gesture_radioButton.setChecked(True)
+        elif type == 'pos' :
+            self.ui.pos_gesture_radioButton.setChecked(True)
 
+    def Set_keyframe_gesture_type_checkable(self,bool_flag):
+        self.ui.ready_gesture_radioButton.setCheckable(bool_flag)
+        self.ui.pre_gesture_radioButton.setCheckable(bool_flag)
+        self.ui.main_gesture_radioButton.setCheckable(bool_flag)
+        self.ui.pos_gesture_radioButton.setCheckable(bool_flag)
 
     def OnButton_saveFile(self):
         fname = QFileDialog.getSaveFileName(self, 'Save file', './Postures/',"OBJ (*.ini)")
-
 
         print(fname)
         print("save file")
@@ -172,34 +191,12 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
             config.filename = fname[0]
             config['Posture_Name'] = fname[0]
             config['Keyframe_Amount'] = self.int_numberOfKeyframe
+            config['Keyframe_Posture_Type'] = self.str_keyframe_gesture_type
             config['Keyframe_Time'] = self.int_time[:self.int_numberOfKeyframe]
             config['Keyframe_Value'] = {}
             for i in range(self.int_numberOfKeyframe):
                 config['Keyframe_Value']['Keyframe_' + str(i)] = self.int_motorValue[i]
             config.write()
-
-
-
-
-
-
-
-        # print("Save")
-        # print(self.str_fileName)
-        # print(self.str_fileNameNumber)
-        #
-        # self.ui.fileName_label.setText(self.str_fileName + self.str_fileNameNumber)
-        #
-        # config = ConfigObj()
-        # config.filename = './Postures/' + self.str_fileName + self.str_fileNameNumber + '.ini'
-        # config['Posture_Name'] = self.str_fileName + self.str_fileNameNumber
-        # config['Keyframe_Amount'] = self.int_numberOfKeyframe
-        # config['Keyframe_Time'] = self.int_time[:self.int_numberOfKeyframe]
-        # config['Keyframe_Value'] = {}
-        # for i in range(self.int_numberOfKeyframe):
-        #     config['Keyframe_Value']['Keyframe_' + str(i)] = self.int_motorValue[i]
-        # config.write()
-
 
     def OnButton_loadFile(self):
         fname = QFileDialog.getOpenFileName(self, 'Open file', './Postures',"OBJ (*.ini)")
@@ -214,6 +211,15 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
 
                 self.int_numberOfKeyframe = int(config['Keyframe_Amount'])
                 self.ui.numOfKeyframeStatus_label.setText(str(self.int_numberOfKeyframe))
+                try:
+                    self.str_keyframe_gesture_type = config['Keyframe_Posture_Type']
+                    print("load keyframe type OK!!")
+                except:
+                    self.str_keyframe_gesture_type = []
+                    for i in range(self.int_numberOfKeyframe):
+                        self.str_keyframe_gesture_type.append('ready')
+                    print("renew gesture type!!!")
+                print(self.str_keyframe_gesture_type)
                 for i in range(int(self.int_numberOfKeyframe)):
                     self.bool_activeKeyframe[i] = True
                     self.int_motorValue[i] = list(map(int, config['Keyframe_Value']['Keyframe_' + str(i)]))
@@ -224,8 +230,6 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
                     self.bool_activeKeyframe[i] = False
 
                 self.SetValueKeyframeToShow()
-
-    print("load file")
 
     def Search_Comport(self):
         ports = list(serial.tools.list_ports.comports())
@@ -544,24 +548,36 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
 
         print("keyframe selected = ")
         print(self.int_keyframeSelected)
-        print(type(keyframe))
-        print(self.bool_activeKeyframe)
+
 
         if self.bool_activeKeyframe[keyframe-1] == True:
             self.ui.activeKeyframe_checkBox.setChecked(2)
             self.SetButtonAndSpinCtrlEnable()
+            self.Set_keyframe_gesture_type_checkable(True)
             for id in self.int_list_id_motor_all:
                 eval("self.ui.motor{}Value_spinBox".format(id)).setValue(self.int_motorValue[keyframe - 1][eval("self.dic_motorIndexID['id{}']".format(id))])
 
             self.ui.keyframeTime_spinBox.setValue(self.int_time[keyframe-1])
+            self.Set_keyframe_gesture_type(self.str_keyframe_gesture_type[keyframe - 1])
+            print(self.str_keyframe_gesture_type[keyframe - 1])
+            print("ssssssss")
+
         else:
+            self.Set_keyframe_gesture_type_checkable(False)
             self.ui.activeKeyframe_checkBox.setChecked(0)
             self.SetButtonAndSpinCtrlDisable()
 
     def CheckPreviousKeyframe(self,currentKeyframe):
         if currentKeyframe == 1:
             self.bool_activeKeyframe[currentKeyframe-1] = True
+            self.str_keyframe_gesture_type.append('ready')
             self.SetValueKeyframeToShow()
+            #self.Set_keyframe_gesture_type(self.str_keyframe_gesture_type[currentKeyframe-1])
+
+            print("len", len(self.str_keyframe_gesture_type))
+            print(self.str_keyframe_gesture_type)
+            print("keyframe=", currentKeyframe)
+
         else:
             self.bool_activeKeyframe[0] = True
             bool_getActiveKeyframe = False
@@ -575,12 +591,32 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
                 self.bool_activeKeyframe[i-1] = True
                 for j in range (17):
                     self.int_motorValue[i-1][j] = self.int_motorValue[int_searchKeyframe-1][j]
+
+            ### set keyframe type ###
+            if len(self.str_keyframe_gesture_type) == 0:
+                for i in range(currentKeyframe):
+                    self.str_keyframe_gesture_type.append('ready')
+            else:
+                add_keyframe_type_loop_amount = currentKeyframe - len(self.str_keyframe_gesture_type)
+                for i in range(add_keyframe_type_loop_amount):
+                    self.str_keyframe_gesture_type.append(self.str_keyframe_gesture_type[len(self.str_keyframe_gesture_type)-1])
+
+            print("len" , len(self.str_keyframe_gesture_type))
+            print(self.str_keyframe_gesture_type)
+            print("keyframe=",currentKeyframe)
+
             self.SetValueKeyframeToShow()
 
     def CheckNextKeyframe(self,currentKeyframe):
         if currentKeyframe == 30:
             self.bool_activeKeyframe[currentKeyframe-1] = False
             self.SetValueKeyframeToShow()
+
+            ### remove keyframe type ###
+            self.str_keyframe_gesture_type.pop(currentKeyframe-1)
+            print("len", len(self.str_keyframe_gesture_type))
+            print(self.str_keyframe_gesture_type)
+            print("keyframe=", currentKeyframe)
         else:
             self.bool_activeKeyframe[29] = False
             bool_getNotActiveKeyframe = False
@@ -594,8 +630,19 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
                 self.bool_activeKeyframe[i-1] = False
                 for j in range (17):
                     self.int_motorValue[i-1][j] = self.int_motorCenterValue[j]
-            #self.SetValueKeyframeToShow(currentKeyframe)
             self.SetValueKeyframeToShow()
+
+            ### remove keyframe type ###
+            remove_keyframe_type_loop_amount = len(self.str_keyframe_gesture_type) - (currentKeyframe -1)
+            print("len=",len(self.str_keyframe_gesture_type))
+            print("keyfram = ",currentKeyframe)
+            print("remove keyframe =",remove_keyframe_type_loop_amount)
+            for i in range(remove_keyframe_type_loop_amount):
+                self.str_keyframe_gesture_type.pop()
+
+            print("len", len(self.str_keyframe_gesture_type))
+            print(self.str_keyframe_gesture_type)
+            print("keyframe=", currentKeyframe)
 
     def ActiveKeyframe_CheckBox(self):
         print(self.ui.activeKeyframe_checkBox.checkState())
@@ -691,7 +738,6 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
             if self.int_keyframeSelected == int(kf):
                 orderKeyframe = index+1
         return orderKeyframe
-
 
     def setReadMotorPacket(self,deviceID,Offset,Length):
         readPacket = [0xFF, 0xFF, deviceID, 0x04, 0x02, Offset, Length]
