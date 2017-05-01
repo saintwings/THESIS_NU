@@ -217,7 +217,10 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
                 except:
                     self.str_keyframe_gesture_type = []
                     for i in range(self.int_numberOfKeyframe):
-                        self.str_keyframe_gesture_type.append('ready')
+                        if i == 0:
+                            self.str_keyframe_gesture_type.append('ready')
+                        else:
+                            self.str_keyframe_gesture_type.append('main')
                     print("renew gesture type!!!")
                 print(self.str_keyframe_gesture_type)
                 for i in range(int(self.int_numberOfKeyframe)):
@@ -836,7 +839,7 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
             self.serialDevice.write(syncWritePacket)
 
 
-            print(syncWritePacket,"goalPos =",goalPos)
+            #print(syncWritePacket,"goalPos =",goalPos)
 
     def InterpolateMotorValue(self,finish_value,start_value,finish_time,start_time,current_time):
         motor_value = int((finish_value - start_value)*(current_time-start_time)/(finish_time - start_time)+start_value)
