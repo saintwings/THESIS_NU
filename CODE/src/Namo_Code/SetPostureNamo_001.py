@@ -35,6 +35,9 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         self.bool_activeKeyframe =[False for x in range (30)]
         self.str_keyframe_gesture_type = []
 
+        self.present_filename = None
+        self.present_filepath = None
+
 
         ## load center ##
         file_center = open('./Postures/motor_center.txt', 'r')
@@ -207,6 +210,11 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
             with f:
                 print("file name", fname[0])
                 config = ConfigObj(fname[0])
+
+                self.present_filename = fname[0].split("/")[len(fname[0].split("/"))-1]
+                self.present_filepath = fname[0]
+                print("present file name =", self.present_filename)
+
                 self.ui.fileName_label.setText((fname[0].split("/")[len(fname[0].split("/"))-1]))
 
                 self.int_numberOfKeyframe = int(config['Keyframe_Amount'])
@@ -480,17 +488,49 @@ class NamoMainWindow(QtWidgets.QMainWindow,Ui_Form):
         print(self.str_fileName)
         print(self.str_fileNameNumber)
 
-        self.ui.fileName_label.setText(self.str_fileName + self.str_fileNameNumber)
+        # self.ui.fileName_label.setText(self.str_fileName + self.str_fileNameNumber)
+        #
+        # config = ConfigObj()
+        # config.filename = './Postures/' + self.str_fileName + self.str_fileNameNumber +'.ini'
+        # config['Posture_Name'] = self.str_fileName + self.str_fileNameNumber
+        # config['Keyframe_Amount'] = self.int_numberOfKeyframe
+        # config['Keyframe_Time'] = self.int_time[:self.int_numberOfKeyframe]
+        # config['Keyframe_Value'] = {}
+        # for i in range(self.int_numberOfKeyframe):
+        #     config['Keyframe_Value']['Keyframe_' + str(i)] = self.int_motorValue[i]
+        # config.write()
+        #
+        # fname = QFileDialog.getSaveFileName(self, 'Save file', './Postures/', "OBJ (*.ini)")
+
 
         config = ConfigObj()
-        config.filename = './Postures/' + self.str_fileName + self.str_fileNameNumber +'.ini'
-        config['Posture_Name'] = self.str_fileName + self.str_fileNameNumber
+        config.filename = self.present_filepath
+        #config.filename = './Postures/' + self.present_filename
+        config['Posture_Name'] = self.present_filepath
         config['Keyframe_Amount'] = self.int_numberOfKeyframe
+        config['Keyframe_Posture_Type'] = self.str_keyframe_gesture_type
         config['Keyframe_Time'] = self.int_time[:self.int_numberOfKeyframe]
         config['Keyframe_Value'] = {}
         for i in range(self.int_numberOfKeyframe):
             config['Keyframe_Value']['Keyframe_' + str(i)] = self.int_motorValue[i]
         config.write()
+
+        print("save file",self.present_filepath)
+        print(self.str_keyframe_gesture_type)
+
+
+        # config = ConfigObj()
+        # config.filename = './Postures/' + self.present_filename
+        # config['Posture_Name'] = self.str_fileName + self.str_fileNameNumber
+        # config['Keyframe_Amount'] = self.int_numberOfKeyframe
+        # config['Keyframe_Posture_Type'] = self.str_keyframe_gesture_type
+        # config['Keyframe_Time'] = self.int_time[:self.int_numberOfKeyframe]
+        # config['Keyframe_Value'] = {}
+        # for i in range(self.int_numberOfKeyframe):
+        #     config['Keyframe_Value']['Keyframe_' + str(i)] = self.int_motorValue[i]
+        # config.write()
+
+
 
     def SetMotorCenterLabel(self):
         for id in self.int_list_id_motor_all:
