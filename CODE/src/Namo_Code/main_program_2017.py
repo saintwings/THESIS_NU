@@ -5,6 +5,9 @@ import numpy as np
 from math import pow, sqrt
 from scipy.stats import norm
 
+
+
+
 def create_sphere_normaldis_score_array(sphere_radius):
 
     normal_dis_array_size = sphere_radius + sphere_radius + 1
@@ -21,6 +24,35 @@ def create_sphere_normaldis_score_array(sphere_radius):
     print(sphere_array)
     return sphere_array
 
+def calculate_mean_all_joint():
+
+    posture_bye_dataset = []
+    path = './Postures/posture_set_bye'
+    for i, filename in enumerate(glob.glob(os.path.join(path, '*.ini'))):
+        config = ConfigObj(filename)
+        main_index = [index for index, x in enumerate(config['Keyframe_Posture_Type']) if x == 'main']
+        for index in main_index:
+            posture_bye_dataset.append(list(map(int,config['Keyframe_Value']['Keyframe_'+str(index)])))
+
+    bye_mean = np.mean(posture_bye_dataset, axis = 0)
+    bye_std = np.std(posture_bye_dataset, axis = 0)
+    print("bye mean =", bye_mean)
+    print("bye std =", bye_std)
+
+    posture_bye_dataset = []
+    path = './Postures/posture_set_bye'
+    for i, filename in enumerate(glob.glob(os.path.join(path, '*.ini'))):
+        config = ConfigObj(filename)
+        main_index = [index for index, x in enumerate(config['Keyframe_Posture_Type']) if x == 'main']
+        for index in main_index:
+            # print(config['Keyframe_Value']['Keyframe_'+str(index)])
+            # print(list(map(int,config['Keyframe_Value']['Keyframe_'+str(index)])))
+            posture_bye_dataset.append(list(map(int, config['Keyframe_Value']['Keyframe_' + str(index)])))
+
+    bye_mean = np.mean(posture_bye_dataset, axis=0)
+    bye_std = np.std(posture_bye_dataset, axis=0)
+    print("bye mean =", bye_mean)
+    print("bye std =", bye_std)
 
 
 def collect_data(path):
@@ -46,7 +78,11 @@ def collect_data(path):
 
 
 
-create_sphere_normaldis_score_array(3)
 
-collect_data('./Postures/posture_set_bye')
 
+if __name__ == "__main__":
+
+    #create_sphere_normaldis_score_array(3) ### @param(sphere_radius)
+
+    #collect_data('./Postures/posture_set_bye') ### @param(path, )
+    calculate_mean_all_joint()
