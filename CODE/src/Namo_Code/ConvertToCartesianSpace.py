@@ -28,7 +28,7 @@ def randrange(n, vmin, vmax):
 def kinematic(str_fileName,plotKeyframe):
     #str_fileName = "p1"
     #int_numberOfKeyframe = 0
-    int_motorDirection = [1,-1,1,-1,1,-1,-1   ,-1,-1,1,1,1,-1,1   ,1,-1,1]
+    int_motorDirection = [1,-1,1,1,1,-1,1   ,-1,-1,1,1,1,-1,1   ,1,-1,1]
     
     # read motor center value #
     file_center = open('motor_center.txt', 'r')
