@@ -5,21 +5,70 @@ import numpy as np
 from math import pow, sqrt, sin, cos, radians
 from scipy.stats import norm
 
-def create_sphere_normaldis_score_array(sphere_radius):
 
-    normal_dis_array_size = sphere_radius + sphere_radius + 1
+def create_3dim_normalize_score_array(radius):
+
+    normal_dis_array_size = radius + radius + 1
     normal_dis_sigma_width = 3
 
-    sphere_array = np.zeros((normal_dis_array_size,normal_dis_array_size,normal_dis_array_size))
+    array = np.zeros((normal_dis_array_size,normal_dis_array_size,normal_dis_array_size))
     for z in range(0,normal_dis_array_size):
         for y in range(0,normal_dis_array_size):
             for x in range(0, normal_dis_array_size):
-                distance = sqrt(pow(x-sphere_radius,2) + pow(y-sphere_radius,2) + pow(z-sphere_radius,2))
-                distance = distance*normal_dis_sigma_width/sphere_radius
-                sphere_array[x, y, z] = round(norm.pdf(distance), 3)
+                distance = sqrt(pow(x-radius,2) + pow(y-radius,2) + pow(z-radius,2))
+                distance = distance*normal_dis_sigma_width/radius
+                array[x, y, z] = round(norm.pdf(distance), 3)
 
+    #print(array)
+    return array
+
+def create_4dim_normalize_score_array(radius):
+
+    normal_dis_array_size = radius + radius + 1
+    normal_dis_sigma_width = 3
+
+    array = np.zeros((normal_dis_array_size,normal_dis_array_size,normal_dis_array_size,normal_dis_array_size))
+    for z in range(0,normal_dis_array_size):
+        for y in range(0,normal_dis_array_size):
+            for x in range(0, normal_dis_array_size):
+                for w in range(0, normal_dis_array_size):
+                    distance = sqrt(pow(w-radius,2) + pow(x-radius,2) + pow(y-radius,2) + pow(z-radius,2))
+                    distance = distance*normal_dis_sigma_width/radius
+                    array[w, x, y, z] = round(norm.pdf(distance), 3)
+
+    #print(array)
+    return array
+
+def add_value_to_index(n):
+    array = []
+    if n == 0:
+        array.append(0)
+    else:
+        array.append(n-1)
+        add_value_to_index(n-1)
+
+    print("aaa=",array)
+
+def create_ndim_normalize_score_array(radius, ndim):
+
+    normal_dis_array_size = radius + radius + 1
+    normal_dis_sigma_width = 3
+
+    array_dim = []
+    for i in range(ndim):
+        array_dim.append(normal_dis_array_size)
+    print("array_dim=",array_dim)
+    sphere_array = np.zeros(array_dim)
     print(sphere_array)
-    return sphere_array
+    # sphere_array[0, 0, 0, 0, 0, 0] = 1
+    #
+    # print("value",sphere_array[0,0,0,0,0,0])
+
+    index = []
+
+    for dim in range(ndim):
+        sub_index = []
+        n = normal_dis_array_size
 
 def convert_motorValue_to_cartesianSpace(posture_dataSet):
     int_motorDirection_and_ratio = [0.5, -1, 1, 1, 1, -1, 1,-0.5, -1, 1, -1, 1, -1, -1, 1, -1, 1]
@@ -91,6 +140,17 @@ def extract_arm_data(posture_dataSet,armSide):
 
     return new_data_set
 
+def collect_cartesian_position_data(kinematics_dataSet, position_index):
+
+    cartesian_dataSet = []
+    #print("len=",len(kinematics_data_set))
+    for kinematics_data in kinematics_dataSet:
+         cartesian_dataSet.append([round(kinematics_data[position_index][0][3],0), round(kinematics_data[position_index][1][3],0), round(kinematics_data[position_index][2][3],0)])
+    #print("len=", len(cartesian_dataSet))
+    #print(cartesian_dataSet)
+
+    return cartesian_dataSet
+
 def collect_kinematics_data(joint7dof_dataSet):
     kinematics_dataSet = []
 
@@ -143,6 +203,14 @@ def cal_kinematics_namo_numpy(degree7Joint,armSide):
     T0E = np.dot(T07,T[7])
     return [T01,T02,T03,T04,T05,T06,T07,T0E]
 
+def collect_quaternion_data(kinematics_dataSet):
+    quaternion_dataSet = []
+
+    for i, kinetics in enumerate(kinematics_dataSet):
+        quaternion_dataSet.append(cal_quaternion(kinetics[7]))
+
+    return quaternion_dataSet
+
 def cal_quaternion(Tmatrix):
     #print Tmatrix
     tr = Tmatrix[0,0] + Tmatrix[1,1] + Tmatrix[2,2]
@@ -178,39 +246,134 @@ def cal_quaternion(Tmatrix):
     norm = sqrt((qw*qw) + (qx*qx) + (qy*qy) + (qz*qz))
     return [qw,qx,qy,qz,norm]
 
+def find_avg_joint_angle(all_posture_stat_list, weight_type):
+    posture_amount = len(all_posture_stat_list)
+    joint_amount = len(all_posture_stat_list[0][0])
 
+    all_posture_mean = []
+
+    for i in range(posture_amount):
+        all_posture_mean.append(all_posture_stat_list[i][0])
+
+
+    #print("all_posture_mean=",all_posture_mean)
+
+    if weight_type == 'std':
+        all_joint_std = []
+        all_joint_std_inv = []
+        all_joint_weight = []
+
+        for joint_num in range(joint_amount):
+            joint_std = []
+            joint_std_inv = []
+
+            #print("joint_num=",joint_num)
+            for posture_num in range(posture_amount):
+                joint_std.append(all_posture_stat_list[posture_num][1][joint_num])
+                joint_std_inv.append(1/all_posture_stat_list[posture_num][1][joint_num])
+
+            all_joint_std.append(joint_std)
+
+            all_joint_std_inv.append(joint_std_inv)
+            all_joint_weight.append([float(i)/sum(joint_std_inv) for i in joint_std_inv])
+
+        # print("all_joint_std=",all_joint_std)
+        # print("all_joint_std_inv=", all_joint_std_inv)
+        # print("all_joint_weight=", all_joint_weight)
+        #
+        # print("transpose_mean", np.transpose(all_posture_mean))
+
+        all_posture_mean_T = np.transpose(all_posture_mean)
+
+        joint_avg = []
+        for joint_num in range(joint_amount):
+            joint_avg.append(float(round(np.average(all_posture_mean_T[joint_num], weights=all_joint_weight[joint_num]),1)))
+
+    elif weight_type == 'equl':
+        #print("all_posture_mean=", all_posture_mean)
+        joint_avg = np.round(np.mean(all_posture_mean, axis = 0),2)
+
+
+    return joint_avg
+
+##################################################################################################
 if __name__ == "__main__":
 
-    #create_sphere_normaldis_score_array(3) ### @param(sphere_radius)
+    workspace_radius = round((182 + 206.5 + 206 + 130),0)
+    workspace_radius = 725
+    workspace_diameter = workspace_radius*2
+    print("workspace_diameter",workspace_diameter)
 
+    #bye_elbow_score_workspace = np.zeros([1300, 1300, 1300])
+    #print(bye_elbow_score_workspace)
+
+
+
+    base_score_3dim = create_3dim_normalize_score_array(3) ### @param(sphere_radius)
+    base_score_4dim = create_4dim_normalize_score_array(3)  ### @param(sphere_radius)
+
+
+    ### load data ###
     jointAngle_degree_bye_set = collect_data('bye') ### @param(postureName)
     jointAngle_degree_salute_set = collect_data('salute')  ### @param(postureName)
     jointAngle_degree_sinvite_set = collect_data('side_invite')  ### @param(postureName)
     jointAngle_degree_wai_set = collect_data('wai')  ### @param(postureName)
 
-    print("bye",jointAngle_degree_bye_set)
-    print("salute", jointAngle_degree_salute_set)
-    print("sinvite", jointAngle_degree_sinvite_set)
-    print("wai", jointAngle_degree_wai_set)
-
+    ### extract right arm data ###
     right_side_bye_set = extract_arm_data( jointAngle_degree_bye_set,'right')
     right_side_salute_set = extract_arm_data(jointAngle_degree_salute_set, 'right')
     right_side_sinvite_set = extract_arm_data(jointAngle_degree_sinvite_set, 'right')
     right_side_wai_set = extract_arm_data(jointAngle_degree_wai_set, 'right')
 
+    ### calculate each posture stat ###
     right_side_bye_stat = calculate_stat_all_joint(right_side_bye_set)
     right_side_salute_stat = calculate_stat_all_joint(right_side_salute_set)
     right_side_sinvite_stat = calculate_stat_all_joint(right_side_sinvite_set)
     right_side_wai_stat = calculate_stat_all_joint(right_side_wai_set)
 
-    print('bye stat =', right_side_bye_stat[0])
-    print('salute stat =', right_side_salute_stat[0])
-    print('sinvite stat =', right_side_sinvite_stat[0])
-    print('wai stat =', right_side_wai_stat[0])
+    ### calculate average join angle from all posture ###
+    all_posture_stat_list = [right_side_bye_stat, right_side_salute_stat, right_side_sinvite_stat, right_side_wai_stat]
+    ### type :: 'std' = standard_deviation, 'equl' = all weight equal
+    avg_joint_angle_std = find_avg_joint_angle(all_posture_stat_list, 'std')
+    avg_joint_angle_equl = find_avg_joint_angle(all_posture_stat_list, 'equl')
 
-    bye_kinematics_set = collect_kinematics_data(right_side_bye_stat)
-    print(bye_kinematics_set[0][3])
-    print(bye_kinematics_set[0][4])
-    print(bye_kinematics_set[0][7])
-    # right_side_all_set = np.concatenate((right_side_bye_set,right_side_salute_set,right_side_sinvite_set,right_side_wai_set), axis = 0)
-    # print(right_side_all_set,len(right_side_all_set))
+    print("avg M:std", avg_joint_angle_std)
+    print("avg M:equl", avg_joint_angle_equl)
+
+    ### calculate kinematics ###
+    bye_kinematics_set = collect_kinematics_data(right_side_bye_set)
+    salute_kinematics_set = collect_kinematics_data(right_side_salute_set)
+    sinvite_kinematics_set = collect_kinematics_data(right_side_sinvite_set)
+    wai_kinematics_set = collect_kinematics_data(right_side_wai_set)
+
+    ##### bye posture #####
+    ### collect bye catesian position and quaternion ###
+    bye_elbow_position = np.asarray(collect_cartesian_position_data(bye_kinematics_set, 3))  ### 3 = elbow position
+    bye_wrist_position = np.asarray(collect_cartesian_position_data(bye_kinematics_set, 4))  ### 4 = wrist position
+    bye_quaternion = np.asarray(collect_quaternion_data(bye_kinematics_set))
+    bye_quaternion_mean = np.mean(bye_quaternion,axis=0)
+    print("quaternion=",bye_quaternion)
+    print("quaternion=", len(bye_quaternion))
+    print("mean=", bye_quaternion_mean)
+
+    min_elbow = np.min(bye_elbow_position, axis=0)
+    max_elbow = np.max(bye_elbow_position, axis=0)
+    diff_elbow = max_elbow - min_elbow
+    add_boundary = 20
+    index_offset_elbow = [int(min_elbow[0]+(add_boundary/2)), int(min_elbow[1]+(add_boundary/2)), int(min_elbow[2]+(add_boundary/2))]
+    print("index_offset_elbow",index_offset_elbow)
+
+    print("min", min_elbow)
+    print("max", max_elbow)
+    print(diff_elbow)
+
+    elbow_score_array = np.zeros([int(diff_elbow[0] + add_boundary), int(diff_elbow[1] + add_boundary), int(diff_elbow[2] + add_boundary)])
+
+    print("array_size",np.shape(elbow_score_array))
+
+
+
+
+
+
+
