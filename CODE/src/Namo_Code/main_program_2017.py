@@ -4,6 +4,12 @@ import os
 import numpy as np
 from math import pow, sqrt, sin, cos, radians
 from scipy.stats import norm
+from sklearn.svm import SVR
+from sklearn.metrics import mean_squared_error, explained_variance_score
+from sklearn.utils import shuffle
+
+import time
+import pickle
 
 
 def create_3dim_normalize_score_array(radius):
@@ -296,6 +302,30 @@ def find_avg_joint_angle(all_posture_stat_list, weight_type):
 
     return joint_avg
 
+def add_score(main_score_array, score_array, index_to_add_score_set, offset_index):
+    accumulate_score_array = np.copy(main_score_array)
+    print("accumulate_score_array_shape",np.shape(accumulate_score_array))
+
+    print("score_array_shape", np.shape(score_array))
+    lower_bound = int((np.shape(score_array)[0] - 1)/2)
+    upper_bound = int((np.shape(score_array)[0] + 1) / 2)
+
+    print("lower_bound",lower_bound)
+    print("upper_bound", upper_bound)
+
+
+    for index in index_to_add_score_set:
+        index_after_offset = index - offset_index
+        #print(index, offset_index, index_after_offset)
+        accumulate_score_array[int((index_after_offset[0] - lower_bound)):int((index_after_offset[0] + upper_bound)),
+                                int((index_after_offset[1] - lower_bound)):int((index_after_offset[1] + upper_bound)),
+                                int((index_after_offset[2] - lower_bound)):int((index_after_offset[2] + upper_bound))] += score_array
+
+    #print(accumulate_score_array)
+    return accumulate_score_array
+
+
+
 ##################################################################################################
 if __name__ == "__main__":
 
@@ -353,24 +383,80 @@ if __name__ == "__main__":
     bye_quaternion = np.asarray(collect_quaternion_data(bye_kinematics_set))
     bye_quaternion_mean = np.mean(bye_quaternion,axis=0)
     print("quaternion=",bye_quaternion)
-    print("quaternion=", len(bye_quaternion))
     print("mean=", bye_quaternion_mean)
 
     min_elbow = np.min(bye_elbow_position, axis=0)
     max_elbow = np.max(bye_elbow_position, axis=0)
     diff_elbow = max_elbow - min_elbow
     add_boundary = 20
-    index_offset_elbow = [int(min_elbow[0]+(add_boundary/2)), int(min_elbow[1]+(add_boundary/2)), int(min_elbow[2]+(add_boundary/2))]
-    print("index_offset_elbow",index_offset_elbow)
+    index_offset_elbow = [int(min_elbow[0]-(add_boundary/2)), int(min_elbow[1]-(add_boundary/2)), int(min_elbow[2]-(add_boundary/2))]
 
     print("min", min_elbow)
     print("max", max_elbow)
     print(diff_elbow)
+    print("index_offset_elbow", index_offset_elbow)
 
     elbow_score_array = np.zeros([int(diff_elbow[0] + add_boundary), int(diff_elbow[1] + add_boundary), int(diff_elbow[2] + add_boundary)])
 
-    print("array_size",np.shape(elbow_score_array))
+    elbow_score_array = np.copy(add_score(elbow_score_array, base_score_3dim, bye_elbow_position, index_offset_elbow))
+    elbow_score_array_shape = np.shape(elbow_score_array)
+    # print("elbow_score_array_shape",elbow_score_array_shape)
+    # for index in bye_elbow_position:
+    #     print(index,elbow_score_array[int(index[0] - index_offset_elbow[0])][int(index[1] - index_offset_elbow[1])][int(index[2] - index_offset_elbow[2])])
+    #
 
+
+
+    data = []
+    ### convert to data ###
+    for z in range(elbow_score_array_shape[0]):
+        for y in range(elbow_score_array_shape[1]):
+            for x in range(elbow_score_array_shape[2]):
+                if elbow_score_array[z][y][x] != 0:
+                    data.append([(z + index_offset_elbow[0]), (y + index_offset_elbow[1]), (x + index_offset_elbow[2]), elbow_score_array[z][y][x]])
+    print(data[0], len(data))
+    data = np.asarray(data)
+    X, y = data[:,:-1], data[:,-1]
+
+    print(X[0])
+    print(y[0])
+
+    num_training = int(0.8 * len(X))
+    X_train, y_train = X[:num_training], y[:num_training]
+    X_test, y_test = X[num_training:], y[num_training:]
+
+    print("time start")
+    print(time.time)
+
+    # Create Support Vector Regression model
+    sv_regressor = SVR(kernel='linear', C=1.0, epsilon=0.1)
+    # Train Support Vector Regressor
+    sv_regressor.fit(X_train, y_train)
+
+    # Evaluate performance of Support Vector Regressor
+    y_test_pred = sv_regressor.predict(X_test)
+    mse = mean_squared_error(y_test, y_test_pred)
+    evs = explained_variance_score(y_test, y_test_pred)
+    print("\n#### Performance ####")
+    print("Mean squared error =", round(mse, 2))
+    print("Explained variance score =", round(evs, 2))
+
+    # Evaluate performance of Support Vector Regressor
+    y_test_pred = sv_regressor.predict(X_test)
+    mse = mean_squared_error(y_test, y_test_pred)
+    evs = explained_variance_score(y_test, y_test_pred)
+    print("\n#### Performance ####")
+    print("Mean squared error =", round(mse, 2))
+    print("Explained variance score =", round(evs, 2))
+
+    # Test the regressor on test datapoint
+    test_data = [121, -178, -167]
+    print("\nPredicted price:", sv_regressor.predict([test_data])[0])
+
+    print("time stop")
+    print(time.time)
+    filename = 'bye_elbow'
+    pickle.dump(sv_regressor,open(filename, 'wb'))
 
 
 
