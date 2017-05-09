@@ -400,21 +400,42 @@ if __name__ == "__main__":
 
     elbow_score_array = np.copy(add_score(elbow_score_array, base_score_3dim, bye_elbow_position, index_offset_elbow))
     elbow_score_array_shape = np.shape(elbow_score_array)
-    # print("elbow_score_array_shape",elbow_score_array_shape)
-    # for index in bye_elbow_position:
-    #     print(index,elbow_score_array[int(index[0] - index_offset_elbow[0])][int(index[1] - index_offset_elbow[1])][int(index[2] - index_offset_elbow[2])])
-    #
 
+    #############
+    min_wrist = np.min(bye_wrist_position, axis=0)
+    max_wrist = np.max(bye_wrist_position, axis=0)
+    diff_wrist = max_wrist - min_wrist
+    add_boundary = 20
+    index_offset_wrist = [int(min_wrist[0] - (add_boundary / 2)), int(min_wrist[1] - (add_boundary / 2)),
+                          int(min_wrist[2] - (add_boundary / 2))]
 
+    print("min", min_wrist)
+    print("max", max_wrist)
+    print(diff_wrist)
+    print("index_offset_wrist", index_offset_wrist)
+
+    wrist_score_array = np.zeros(
+        [int(diff_wrist[0] + add_boundary), int(diff_wrist[1] + add_boundary), int(diff_wrist[2] + add_boundary)])
+
+    wrist_score_array = np.copy(add_score(wrist_score_array, base_score_3dim, bye_wrist_position, index_offset_wrist))
+    wrist_score_array_shape = np.shape(wrist_score_array)
+
+    ####################################################################################################################
+    posture_score_array = np.copy(elbow_score_array)
+    posture_score_array_shape = np.shape(posture_score_array)
+    posture_index_offset = np.copy(index_offset_elbow)
+    posture_name = str(elbow_score_array)
 
     data = []
     ### convert to data ###
-    for z in range(elbow_score_array_shape[0]):
-        for y in range(elbow_score_array_shape[1]):
-            for x in range(elbow_score_array_shape[2]):
-                if elbow_score_array[z][y][x] != 0:
-                    data.append([(z + index_offset_elbow[0]), (y + index_offset_elbow[1]), (x + index_offset_elbow[2]), elbow_score_array[z][y][x]])
-    print(data[0], len(data))
+    for z in range(posture_score_array_shape[0]):
+        for y in range(posture_score_array_shape[1]):
+            for x in range(posture_score_array_shape[2]):
+                if posture_score_array[z][y][x] != 0:
+                    if (z + posture_index_offset[0]) == 121 and (y + posture_index_offset[1]) == -178:
+                        print([(z + posture_index_offset[0]), (y + posture_index_offset[1]), (x + posture_index_offset[2]), posture_score_array[z][y][x]])
+                    data.append([(z + posture_index_offset[0]), (y + posture_index_offset[1]), (x + posture_index_offset[2]), posture_score_array[z][y][x]])
+    #print(data, len(data))
     data = np.asarray(data)
     X, y = data[:,:-1], data[:,-1]
 
@@ -425,38 +446,45 @@ if __name__ == "__main__":
     X_train, y_train = X[:num_training], y[:num_training]
     X_test, y_test = X[num_training:], y[num_training:]
 
-    print("time start")
-    print(time.time)
+    # print("time start")
+    # print(time.time())
+    # print(time.ctime())
+    #
+    # # Create Support Vector Regression model
+    # sv_regressor = SVR(kernel='linear', C=1.0, epsilon=0.1)
+    # # Train Support Vector Regressor
+    # sv_regressor.fit(X_train, y_train)
+    #
+    # print("time stop")
+    # print(time.time())
+    # print(time.ctime())
+    #
+    # # Evaluate performance of Support Vector Regressor
+    # y_test_pred = sv_regressor.predict(X_test)
+    # mse = mean_squared_error(y_test, y_test_pred)
+    # evs = explained_variance_score(y_test, y_test_pred)
+    # print("\n#### Performance ####")
+    # print("Mean squared error =", round(mse, 2))
+    # print("Explained variance score =", round(evs, 2))
+    #
+    # # Evaluate performance of Support Vector Regressor
+    # y_test_pred = sv_regressor.predict(X_test)
+    # mse = mean_squared_error(y_test, y_test_pred)
+    # evs = explained_variance_score(y_test, y_test_pred)
+    # print("\n#### Performance ####")
+    # print("Mean squared error =", round(mse, 2))
+    # print("Explained variance score =", round(evs, 2))
+    #
+    # # Test the regressor on test datapoint
+    # test_data = [121, -178, -167]
+    # print("\nPredicted price:", sv_regressor.predict([test_data])[0])
+    #
+    # print("time stop")
+    # print(time.time())
+    # print(time.ctime())
+    # filename = posture_name
+    # pickle.dump(sv_regressor,open(filename, 'wb'))
 
-    # Create Support Vector Regression model
-    sv_regressor = SVR(kernel='linear', C=1.0, epsilon=0.1)
-    # Train Support Vector Regressor
-    sv_regressor.fit(X_train, y_train)
-
-    # Evaluate performance of Support Vector Regressor
-    y_test_pred = sv_regressor.predict(X_test)
-    mse = mean_squared_error(y_test, y_test_pred)
-    evs = explained_variance_score(y_test, y_test_pred)
-    print("\n#### Performance ####")
-    print("Mean squared error =", round(mse, 2))
-    print("Explained variance score =", round(evs, 2))
-
-    # Evaluate performance of Support Vector Regressor
-    y_test_pred = sv_regressor.predict(X_test)
-    mse = mean_squared_error(y_test, y_test_pred)
-    evs = explained_variance_score(y_test, y_test_pred)
-    print("\n#### Performance ####")
-    print("Mean squared error =", round(mse, 2))
-    print("Explained variance score =", round(evs, 2))
-
-    # Test the regressor on test datapoint
-    test_data = [121, -178, -167]
-    print("\nPredicted price:", sv_regressor.predict([test_data])[0])
-
-    print("time stop")
-    print(time.time)
-    filename = 'bye_elbow'
-    pickle.dump(sv_regressor,open(filename, 'wb'))
 
 
 
